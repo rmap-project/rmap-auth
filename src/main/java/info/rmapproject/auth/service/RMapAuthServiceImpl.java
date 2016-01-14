@@ -23,8 +23,8 @@ public class RMapAuthServiceImpl implements RMapAuthService {
 		return agentTypeService.getAgentTypes();
 	}
 	
-	public void addApiKey(ApiKey apiKey) throws RMapAuthException{
-		apiKeyService.addApiKey(apiKey);
+	public int addApiKey(ApiKey apiKey) throws RMapAuthException{
+		return apiKeyService.addApiKey(apiKey);
 	}
 	
 	public void updateApiKey(ApiKey apiKey) throws RMapAuthException{
@@ -49,8 +49,8 @@ public class RMapAuthServiceImpl implements RMapAuthService {
 		apiKeyService.validateApiKey(accessKey,secret);		
 	}
 	
-	public void addUser(User user) throws RMapAuthException{
-		userService.addUser(user);
+	public int addUser(User user) throws RMapAuthException{
+		return userService.addUser(user);
 	}
 	public void updateUserSettings(User user) throws RMapAuthException{
 		userService.updateUserSettings(user);

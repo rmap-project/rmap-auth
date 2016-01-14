@@ -1,4 +1,4 @@
-package info.rmapproject.auth.util;
+package info.rmapproject.auth.utils;
 
 public final class Constants  {
 	  /**Used as a default message when the error message properties file cannot be found*/

@@ -8,7 +8,7 @@ import info.rmapproject.auth.model.User;
  *
  */
 public interface UserDao {
-	public void addUser(User user) throws RMapAuthException;
+	public int addUser(User user) throws RMapAuthException;
 	public void updateUser(User user) throws RMapAuthException;
 	public User getUserById(int userId) throws RMapAuthException;
 }

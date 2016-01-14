@@ -3,7 +3,7 @@
  */
 package info.rmapproject.auth.service;
 
-import info.rmapproject.auth.util.Constants;
+import info.rmapproject.auth.utils.Constants;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

@@ -29,13 +29,12 @@ public class ApiKeyServiceImpl implements ApiKeyService {
 	@Autowired
 	ApiKeyDao apiKeyDao;
    
-	public void addApiKey(ApiKey apiKey) throws RMapAuthException {
+	public int addApiKey(ApiKey apiKey) throws RMapAuthException {
 		//TODO:putting values here so db doesn't reject, need to go out and get these.
 		apiKey.setAccessKey("abcdefg");
 		apiKey.setSecret("123456789");
 		apiKey.setKeyUri("ark:/29297/12345");
-		apiKey.setUserId(3);
-		apiKeyDao.addApiKey(apiKey);
+		return apiKeyDao.addApiKey(apiKey);
 	}
 
 	public void updateApiKey(ApiKey updatedApiKey) throws RMapAuthException {

@@ -24,10 +24,11 @@ public class UserDaoImpl implements UserDao {
     @Autowired
     private SessionFactory sessionFactory;
  	
-	public void addUser(User user) throws RMapAuthException {
+	public int addUser(User user) throws RMapAuthException {
         Session session = this.sessionFactory.getCurrentSession();
         session.persist(user);
-        logger.info("User record saved successfully, User Details=" + user);		
+        logger.info("User record saved successfully, User Details=" + user);	
+        return user.getUserId();
 	}
 
 	public void updateUser(User user) throws RMapAuthException {

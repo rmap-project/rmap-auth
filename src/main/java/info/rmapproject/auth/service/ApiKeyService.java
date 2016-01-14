@@ -11,7 +11,7 @@ import java.util.List;
  *
  */
 public interface ApiKeyService {
-	public void addApiKey(ApiKey apiKey) throws RMapAuthException;
+	public int addApiKey(ApiKey apiKey) throws RMapAuthException;
 	public void updateApiKey(ApiKey apiKey) throws RMapAuthException;
 	public ApiKey getApiKeyById(int apiKeyId) throws RMapAuthException;
 	public ApiKey getApiKeyByKeySecret(String accessKey, String secret) throws RMapAuthException;

@@ -29,10 +29,11 @@ public class ApiKeyDaoImpl implements ApiKeyDao {
     @Autowired
     private SessionFactory sessionFactory;
  	
-	public void addApiKey(ApiKey apiKey) throws RMapAuthException {
+	public int addApiKey(ApiKey apiKey) throws RMapAuthException {
         Session session = this.sessionFactory.getCurrentSession();
         session.persist(apiKey);
         logger.info("API key saved successfully, API key=" + apiKey);	
+        return apiKey.getApiKeyId();
 	}
 
 	public void updateApiKey(ApiKey apiKey) throws RMapAuthException {

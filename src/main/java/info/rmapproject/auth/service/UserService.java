@@ -7,7 +7,7 @@ import info.rmapproject.auth.model.User;
  *
  */
 public interface UserService {
-	public void addUser(User user);
+	public int addUser(User user);
 	public void updateUserSettings(User user);
 	public User getUserById(int userId);
 }

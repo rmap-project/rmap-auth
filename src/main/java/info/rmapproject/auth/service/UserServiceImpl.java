@@ -24,8 +24,8 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	UserDao userDao; 	
 	
-	public void addUser(User user) {
-		userDao.addUser(user);
+	public int addUser(User user) {
+		return userDao.addUser(user);
 	}
 
 	//user settings are what is available through web form

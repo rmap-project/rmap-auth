@@ -1,6 +1,6 @@
 package info.rmapproject.auth.exception;
 
-import info.rmapproject.auth.util.Constants;
+import info.rmapproject.auth.utils.Constants;
 
 import java.util.Properties;
 
