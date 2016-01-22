@@ -35,21 +35,14 @@ public class User {
 	@Email(message="Invalid email")
 	private String email;
 	private Boolean isActive = true;
-	private Boolean hasRMapAgent = false;
 	private String rmapAgentUri = null;	
+	private String rmapDiSCOUri = null;	
 	private String authKeyUri = null;
 	private Date createdDate = new Date();
 	private Date lastAccessedDate = new Date();
-	private Date cancellationDate = new Date();
+	private Date cancellationDate = null;
 	private String primaryIdProvider = null;
-	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	@JoinColumn(name="userId")
-	private Set<UserAgentUri> userAgentUris = new HashSet<UserAgentUri>();
-
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	@JoinColumn(name = "userId")  
-	private Set<UserAgentType> userAgentTypes = new HashSet<UserAgentType>();  
+	private boolean doRMapAgentSync = false;
 	
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="userId")
@@ -58,7 +51,6 @@ public class User {
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="userId")
 	private Set<ApiKey> apiKeys = new HashSet<ApiKey>();
-
 	
 	public int getUserId() {
 		return userId;
@@ -84,17 +76,17 @@ public class User {
 	public void setIsActive(Boolean isActive) {
 		this.isActive = isActive;
 	}
-	public Boolean getHasRMapAgent() {
-		return hasRMapAgent;
-	}
-	public void setHasRMapAgent(Boolean hasRMapAgent) {
-		this.hasRMapAgent = hasRMapAgent;
-	}
 	public String getRmapAgentUri() {
 		return rmapAgentUri;
 	}
 	public void setRmapAgentUri(String rmapAgentUri) {
 		this.rmapAgentUri = rmapAgentUri;
+	}
+	public String getRmapDiSCOUri() {
+		return rmapDiSCOUri;
+	}
+	public void setRmapDiSCOUri(String rmapDiSCOUri) {
+		this.rmapDiSCOUri = rmapDiSCOUri;
 	}
 	public String getAuthKeyUri() {
 		return authKeyUri;
@@ -119,22 +111,6 @@ public class User {
 	}
 	public void setCancellationDate(Date cancellationDate) {
 		this.cancellationDate = cancellationDate;
-	}
-
-    public Set<UserAgentUri> getUserAgentUris() {
-		return userAgentUris;
-	}
-    
-	public void setUserAgentUris(Set<UserAgentUri> userAgentUris) {
-		this.userAgentUris = userAgentUris;
-	}
-	
-	public Set<UserAgentType> getUserAgentTypes() {
-		return userAgentTypes;
-	}
-	
-	public void setUserAgentTypes(Set<UserAgentType> userAgentTypes) {
-		this.userAgentTypes = userAgentTypes;
 	}
 	
 	public Set<UserIdentityProvider> getUserIdentityProviders() {
@@ -162,6 +138,21 @@ public class User {
 	public void setApiKeys(Set<ApiKey> apiKeys) {
 		this.apiKeys = apiKeys;
 	}*/
+	
+	public boolean isDoRMapAgentSync() {
+		return doRMapAgentSync;
+	}
+	public void setDoRMapAgentSync(boolean doRMapAgentSync) {
+		this.doRMapAgentSync = doRMapAgentSync;
+	}
+
+	public Boolean hasRMapAgent() {
+		return (this.rmapAgentUri!=null&&this.rmapAgentUri.length()>0);
+	}	
+
+	public Boolean hasRMapDiSCO() {
+		return (this.rmapDiSCOUri!=null&&this.rmapDiSCOUri.length()>0);
+	}	
 	
 	@Override
     public int hashCode() {

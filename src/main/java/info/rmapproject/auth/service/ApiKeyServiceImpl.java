@@ -5,8 +5,11 @@ import info.rmapproject.auth.exception.ErrorCode;
 import info.rmapproject.auth.exception.RMapAuthException;
 import info.rmapproject.auth.model.ApiKey;
 import info.rmapproject.auth.model.KeyStatus;
+import info.rmapproject.auth.utils.Constants;
+import info.rmapproject.auth.utils.Utils;
 
 import java.net.URI;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -30,10 +33,38 @@ public class ApiKeyServiceImpl implements ApiKeyService {
 	ApiKeyDao apiKeyDao;
    
 	public int addApiKey(ApiKey apiKey) throws RMapAuthException {
-		//TODO:putting values here so db doesn't reject, need to go out and get these.
-		apiKey.setAccessKey("abcdefg");
-		apiKey.setSecret("123456789");
-		apiKey.setKeyUri("ark:/29297/12345");
+		//generate a new key/secret
+		String newAccessKey = Utils.generateRandomString(128);
+		String newSecret = Utils.generateRandomString(512);
+		//check for the very unlikely occurrence that a duplicate key/secret combo is generated
+		URI agent = this.getAgentUriByKeySecret(newAccessKey, newSecret);
+		if (agent!=null){
+			//a duplicate key combo!!! - try again...
+			newAccessKey = Utils.generateRandomString(128);
+			newSecret = Utils.generateRandomString(512);
+			agent = null;
+			agent = this.getAgentUriByKeySecret(newAccessKey, newSecret);
+			if (agent!=null){
+				//there is probably a system problem at this point
+				throw new RMapAuthException(ErrorCode.ER_PROBLEM_GENERATING_NEW_APIKEY.getMessage());
+			}
+		}
+		apiKey.setAccessKey(newAccessKey);
+		apiKey.setSecret(newSecret);
+		
+		//associate a keyuri that can be included in the event
+		String keyUri = Constants.RMAP_BASE_URL + "keyids/" + Utils.generateRandomString(32);
+		ApiKey dupKey = this.getApiKeyByKeyUri(keyUri);
+		if (dupKey!=null){
+			keyUri = Constants.RMAP_BASE_URL + "keyids/" + Utils.generateRandomString(32);
+			dupKey = null;
+			dupKey = this.getApiKeyByKeyUri(keyUri);
+			if (dupKey!=null){
+				throw new RMapAuthException(ErrorCode.ER_PROBLEM_GENERATING_NEW_APIKEY.getMessage());
+			}
+		}
+		apiKey.setKeyUri(keyUri);
+		
 		return apiKeyDao.addApiKey(apiKey);
 	}
 
@@ -59,10 +90,14 @@ public class ApiKeyServiceImpl implements ApiKeyService {
         return apiKeyDao.getApiKeyByKeySecret(accessKey, secret);		
 	}
 
-	public URI getAgentUriByKeySecret(String accessKey, String secret) throws RMapAuthException {
-        return apiKeyDao.getAgentUriByKeySecret(accessKey, secret);		
+	public ApiKey getApiKeyByKeyUri(String keyUri) throws RMapAuthException {
+        return apiKeyDao.getApiKeyByKeyUri(keyUri);		
 	}
 	
+	public URI getAgentUriByKeySecret(String accessKey, String secret) throws RMapAuthException {
+        return apiKeyDao.getAgentUriByKeySecret(accessKey, secret);		
+	}	
+
 	public List<ApiKey> listApiKeyByUser(int userId) throws RMapAuthException {
         return apiKeyDao.listApiKeyByUser(userId);
 	}
@@ -72,14 +107,21 @@ public class ApiKeyServiceImpl implements ApiKeyService {
 		ApiKey apiKey = getApiKeyByKeySecret(accessKey, secret);
 
 		if (apiKey !=null){
-			Date currdate = new Date();
 			KeyStatus keyStatus = apiKey.getKeyStatus();
 			Date keyStartDate = apiKey.getStartDate();
 			Date keyEndDate = apiKey.getEndDate();
 		
+	        Calendar now = Calendar.getInstance();
+	        now.set(Calendar.HOUR_OF_DAY, 0);
+	        now.set(Calendar.MINUTE, 0);
+	        now.set(Calendar.SECOND, 0);
+			Date today = now.getTime();
+			now.add(Calendar.DATE, -1);
+			Date yesterday = now.getTime();
+			
 			if(keyStatus != KeyStatus.ACTIVE
-				|| (keyStartDate!=null && keyStartDate.after(currdate))
-				|| (keyEndDate!=null && keyEndDate.after(currdate))) {
+				|| (keyStartDate!=null && keyStartDate.after(today))
+				|| (keyEndDate!=null && keyEndDate.before(yesterday))) {
 				//key not valid! throw exception
 				throw new RMapAuthException(ErrorCode.ER_KEY_INACTIVE.getMessage());				
 			}

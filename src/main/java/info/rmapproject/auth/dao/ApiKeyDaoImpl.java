@@ -63,7 +63,21 @@ public class ApiKeyDaoImpl implements ApiKeyDao {
 		else	{
 			return null;
 		}
-		
+	}
+
+    @SuppressWarnings("unchecked")
+	public ApiKey getApiKeyByKeyUri(String keyUri) throws RMapAuthException {
+        Session session = this.sessionFactory.getCurrentSession();   
+        Query query = session.createQuery("from ApiKey where keyUri=:keyUri");
+        query.setParameter("keyUri",keyUri);
+		List<ApiKey> apiKeys = query.list();
+		if (apiKeys != null && !apiKeys.isEmpty()) {
+	        logger.info("Api key list loaded successfully");
+			return apiKeys.get(0);
+		}
+		else	{
+			return null;
+		}
 	}
     
     @SuppressWarnings("unchecked")

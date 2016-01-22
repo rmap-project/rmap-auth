@@ -15,6 +15,7 @@ public interface ApiKeyDao {
 	public void updateApiKey(ApiKey apiKey) throws RMapAuthException;
 	public ApiKey getApiKeyById(int apiKeyId) throws RMapAuthException;
 	public ApiKey getApiKeyByKeySecret(String key, String secret) throws RMapAuthException;
+	public ApiKey getApiKeyByKeyUri(String accessKey) throws RMapAuthException;
 	public List<ApiKey> listApiKeyByUser(int userId) throws RMapAuthException;
 	public URI getAgentUriByKeySecret(String accessKey, String secret) throws RMapAuthException;
 }
