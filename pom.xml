@@ -47,17 +47,25 @@
             <artifactId>spring-orm</artifactId>
             <version>${org.springframework-version}</version>
         </dependency>
-	    <!-- for OAuth 2.0 
-	    <dependency>
-	        <groupId>org.springframework.security.oauth</groupId>
-	        <artifactId>spring-security-oauth2</artifactId>
-	        <version>2.0.7.RELEASE</version>
-	    </dependency>-->
+		
+		<!-- oauth plugin -->
+		<dependency>
+		    <groupId>com.github.scribejava</groupId>
+		    <artifactId>scribejava-apis</artifactId>
+		    <version>2.1.0</version>
+		</dependency>
+		
 		<!-- AspectJ -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
 			<version>${org.aspectj-version}</version>
+		</dependency>
+			
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20151123</version>
 		</dependency>
 		
         <!-- needed for testing on desktop -->

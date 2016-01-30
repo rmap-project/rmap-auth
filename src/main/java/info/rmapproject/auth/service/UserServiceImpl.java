@@ -4,6 +4,7 @@ import info.rmapproject.auth.dao.UserDao;
 import info.rmapproject.auth.exception.ErrorCode;
 import info.rmapproject.auth.exception.RMapAuthException;
 import info.rmapproject.auth.model.User;
+import info.rmapproject.auth.oauth.OAuthProviderAccount;
 import info.rmapproject.auth.utils.Constants;
 import info.rmapproject.auth.utils.Utils;
 
@@ -21,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service("userService")
 @Transactional
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl {
 
 //private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 	
@@ -63,9 +64,13 @@ public class UserServiceImpl implements UserService {
 	public User getUserById(int userId) {
         return userDao.getUserById(userId);
 	}
-
+	
 	public User getUserByAuthKeyUri(String authKeyUri) {
         return userDao.getUserByAuthKeyUri(authKeyUri);
+	}
+	
+	public User getUserByProviderAccount(OAuthProviderAccount account) throws RMapAuthException{
+		return userDao.getUserByProviderAccount(account);
 	}
 	
 	

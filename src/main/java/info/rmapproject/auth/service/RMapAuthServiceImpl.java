@@ -3,6 +3,7 @@ package info.rmapproject.auth.service;
 import info.rmapproject.auth.exception.RMapAuthException;
 import info.rmapproject.auth.model.ApiKey;
 import info.rmapproject.auth.model.User;
+import info.rmapproject.auth.oauth.OAuthProviderAccount;
 import info.rmapproject.core.model.event.RMapEvent;
 
 import java.net.URI;
@@ -13,11 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class RMapAuthServiceImpl implements RMapAuthService {
 	
 	@Autowired
-	private ApiKeyService apiKeyService; 
+	private ApiKeyServiceImpl apiKeyService; 
 	@Autowired
-	private UserService userService; 
+	private UserServiceImpl userService; 
 	@Autowired
-	private UserRMapAgentService agentService; 
+	private UserRMapAgentServiceImpl agentService; 
 	
 	public int addApiKey(ApiKey apiKey) throws RMapAuthException{
 		return apiKeyService.addApiKey(apiKey);
@@ -61,8 +62,14 @@ public class RMapAuthServiceImpl implements RMapAuthService {
 		return userService.getUserById(userId);
 	}
 	
+	public User getUserByProviderAccount(OAuthProviderAccount account) throws RMapAuthException{
+		return userService.getUserByProviderAccount(account);
+	}
+	
 	public RMapEvent createOrUpdateAgentFromUser(User user) throws RMapAuthException {
 		return agentService.createOrUpdateAgentFromUser(user);
 	}	
+
+	
 		
 }

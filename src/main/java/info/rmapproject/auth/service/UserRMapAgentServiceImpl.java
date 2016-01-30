@@ -23,11 +23,11 @@ import org.springframework.stereotype.Service;
  */
 
 @Service("rMapAgentService")
-public class UserRMapAgentServiceImpl implements UserRMapAgentService {
+public class UserRMapAgentServiceImpl {
 
 	//private static final Logger logger = LoggerFactory.getLogger(ApiKeyServiceImpl.class);
 	@Autowired
-	UserService userService;
+	UserServiceImpl userService;
 	
 	public RMapEvent createOrUpdateAgentFromUser(User user) throws RMapAuthException {
 		

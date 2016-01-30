@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service("apiKeyService")
 @Transactional
-public class ApiKeyServiceImpl implements ApiKeyService {
+public class ApiKeyServiceImpl {
 
 	//private static final Logger logger = LoggerFactory.getLogger(ApiKeyServiceImpl.class);
 	

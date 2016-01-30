@@ -1,5 +1,7 @@
 package info.rmapproject.auth.model;
 
+import info.rmapproject.auth.oauth.OAuthProviderAccount;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -42,6 +44,7 @@ public class User {
 	private Date lastAccessedDate = new Date();
 	private Date cancellationDate = null;
 	private String primaryIdProvider = null;
+	private String primaryIdProviderId = null;
 	private boolean doRMapAgentSync = false;
 	
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
@@ -51,6 +54,15 @@ public class User {
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="userId")
 	private Set<ApiKey> apiKeys = new HashSet<ApiKey>();
+	
+	public User(){}
+	
+	public User (OAuthProviderAccount account){
+		this.setName(account.getDisplayName());	
+		this.setEmail(account.getAccountId());
+		this.setPrimaryIdProvider(account.getProviderName().getIdProviderUrl());
+		this.setPrimaryIdProviderId(account.getAccountId());		
+	}
 	
 	public int getUserId() {
 		return userId;
@@ -129,6 +141,12 @@ public class User {
 		this.primaryIdProvider = primaryIdProvider;
 	}
 
+	public String getPrimaryIdProviderId() {
+		return primaryIdProviderId;
+	}
+	public void setPrimaryIdProviderId(String primaryIdProviderId) {
+		this.primaryIdProviderId = primaryIdProviderId;
+	}
 	
 	/*
 	public Set<ApiKey> getApiKeys() {
