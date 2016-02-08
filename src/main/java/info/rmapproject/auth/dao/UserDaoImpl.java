@@ -2,7 +2,6 @@ package info.rmapproject.auth.dao;
 
 import info.rmapproject.auth.exception.RMapAuthException;
 import info.rmapproject.auth.model.User;
-import info.rmapproject.auth.oauth.OAuthProviderAccount;
 
 import java.util.List;
 
@@ -47,13 +46,13 @@ public class UserDaoImpl implements UserDao {
         logger.info("User record loaded successfully, User details=" + user);
         return user;
 	}
-
+	
 	@SuppressWarnings("unchecked")
-	public User getUserByProviderAccount(OAuthProviderAccount account) throws RMapAuthException{
+	public User getUserByProviderAccount(String idProvider, String idProviderId) throws RMapAuthException{
         Session session = this.sessionFactory.getCurrentSession();   
         Query query = session.createQuery("from User where primaryIdProvider=:idProvider and primaryIdProviderId=:idProviderId");
-        query.setParameter("idProvider",account.getProviderName().getIdProviderUrl());
-        query.setParameter("idProviderId",account.getAccountId());
+        query.setParameter("idProvider",idProvider);
+        query.setParameter("idProviderId",idProviderId);
 		List<User> users = query.list();
 		if (users != null && !users.isEmpty()) {
 	        logger.info("User loaded successfully");

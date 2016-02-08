@@ -34,14 +34,14 @@ public class ApiKeyServiceImpl {
    
 	public int addApiKey(ApiKey apiKey) throws RMapAuthException {
 		//generate a new key/secret
-		String newAccessKey = Utils.generateRandomString(128);
-		String newSecret = Utils.generateRandomString(512);
+		String newAccessKey = Utils.generateRandomString(Constants.ACCESS_KEY_LENGTH);
+		String newSecret = Utils.generateRandomString(Constants.SECRET_LENGTH);
 		//check for the very unlikely occurrence that a duplicate key/secret combo is generated
 		URI agent = this.getAgentUriByKeySecret(newAccessKey, newSecret);
 		if (agent!=null){
 			//a duplicate key combo!!! - try again...
-			newAccessKey = Utils.generateRandomString(128);
-			newSecret = Utils.generateRandomString(512);
+			newAccessKey = Utils.generateRandomString(Constants.ACCESS_KEY_LENGTH);
+			newSecret = Utils.generateRandomString(Constants.SECRET_LENGTH);
 			agent = null;
 			agent = this.getAgentUriByKeySecret(newAccessKey, newSecret);
 			if (agent!=null){
@@ -53,10 +53,10 @@ public class ApiKeyServiceImpl {
 		apiKey.setSecret(newSecret);
 		
 		//associate a keyuri that can be included in the event
-		String keyUri = Constants.RMAP_BASE_URL + "keyids/" + Utils.generateRandomString(32);
+		String keyUri = Constants.RMAP_BASE_URL + Constants.KEY_ID_FOLDER + "/" + Utils.generateRandomString(Constants.KEY_ID_LENGTH);
 		ApiKey dupKey = this.getApiKeyByKeyUri(keyUri);
 		if (dupKey!=null){
-			keyUri = Constants.RMAP_BASE_URL + "keyids/" + Utils.generateRandomString(32);
+			keyUri = Constants.RMAP_BASE_URL + Constants.KEY_ID_FOLDER + "/" + Utils.generateRandomString(Constants.KEY_ID_LENGTH);
 			dupKey = null;
 			dupKey = this.getApiKeyByKeyUri(keyUri);
 			if (dupKey!=null){

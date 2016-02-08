@@ -1,7 +1,5 @@
 package info.rmapproject.auth.model;
 
-import info.rmapproject.auth.oauth.OAuthProviderAccount;
-
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -57,11 +55,17 @@ public class User {
 	
 	public User(){}
 	
-	public User (OAuthProviderAccount account){
-		this.setName(account.getDisplayName());	
-		this.setEmail(account.getAccountId());
-		this.setPrimaryIdProvider(account.getProviderName().getIdProviderUrl());
-		this.setPrimaryIdProviderId(account.getAccountId());		
+	public User (String name, String email, String idProvider, String idProviderId){
+		this.setName(name);	
+		this.setEmail(email);
+		this.setPrimaryIdProvider(idProvider);
+		this.setPrimaryIdProviderId(idProviderId);		
+	}
+	
+	public User (String name, String idProvider, String idProviderId) {
+		this.setName(name);
+		this.setPrimaryIdProvider(idProvider);
+		this.setPrimaryIdProviderId(idProviderId);
 	}
 	
 	public int getUserId() {

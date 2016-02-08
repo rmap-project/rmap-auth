@@ -21,11 +21,15 @@ public class UserIdentityProvider {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int userIdentityProviderId;
-	private String accessToken;
-	private String refreshToken;
+	private String identityProvider;
+	private String providerAccountInternalId;
+	private String providerAccountPublicId;
+	private String providerAccountDisplayName;
+	private String requestToken;
 	private Date tokenCreatedDate;
 	private Date tokenExpirationDate;
-	private int identityProviderId;
+	private Date createdDate;
+	private Date modifiedDate;
 	private int userId;
 		
 	public int getUserIdentityProviderId() {
@@ -34,17 +38,11 @@ public class UserIdentityProvider {
 	public void setUserIdentityProviderId(int userIdentityProviderId) {
 		this.userIdentityProviderId = userIdentityProviderId;
 	}
-	public String getAccessToken() {
-		return accessToken;
-	}
-	public void setAccessToken(String accessToken) {
-		this.accessToken = accessToken;
-	}
 	public String getRefreshToken() {
-		return refreshToken;
+		return requestToken;
 	}
 	public void setRefreshToken(String refreshToken) {
-		this.refreshToken = refreshToken;
+		this.requestToken = refreshToken;
 	}
 	public Date getTokenCreatedDate() {
 		return tokenCreatedDate;
@@ -58,17 +56,47 @@ public class UserIdentityProvider {
 	public void setTokenExpirationDate(Date tokenExpirationDate) {
 		this.tokenExpirationDate = tokenExpirationDate;
 	}
-	public int getIdentityProviderId() {
-		return identityProviderId;
+	public String getIdentityProvider() {
+		return identityProvider;
 	}
-	public void setIdentityProviderId(int identityProviderId) {
-		this.identityProviderId = identityProviderId;
+	public void setIdentityProviderId(String identityProvider) {
+		this.identityProvider = identityProvider;
 	}
 	public int getUserId() {
 		return userId;
 	}
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+	public String getProviderAccountInternalId() {
+		return providerAccountInternalId;
+	}
+	public void setProviderAccountInternalId(String providerAccountInternalId) {
+		this.providerAccountInternalId = providerAccountInternalId;
+	}
+	public String getProviderAccountPublicId() {
+		return providerAccountPublicId;
+	}
+	public void setProviderAccountPublicId(String providerAccountPublicId) {
+		this.providerAccountPublicId = providerAccountPublicId;
+	}
+	public String getProviderAccountDisplayName() {
+		return providerAccountDisplayName;
+	}
+	public void setProviderAccountDisplayName(String providerAccountDisplayName) {
+		this.providerAccountDisplayName = providerAccountDisplayName;
+	}
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+	public Date getModifiedDate() {
+		return modifiedDate;
+	}
+	public void setModifiedDate(Date modifiedDate) {
+		this.modifiedDate = modifiedDate;
 	}
 	
 	

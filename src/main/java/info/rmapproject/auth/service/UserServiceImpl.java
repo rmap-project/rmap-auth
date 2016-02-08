@@ -4,7 +4,6 @@ import info.rmapproject.auth.dao.UserDao;
 import info.rmapproject.auth.exception.ErrorCode;
 import info.rmapproject.auth.exception.RMapAuthException;
 import info.rmapproject.auth.model.User;
-import info.rmapproject.auth.oauth.OAuthProviderAccount;
 import info.rmapproject.auth.utils.Constants;
 import info.rmapproject.auth.utils.Utils;
 
@@ -29,12 +28,17 @@ public class UserServiceImpl {
 	@Autowired
 	UserDao userDao; 	
 	
+	/**
+	 * Creates a new user based on User object provided
+	 * @param user
+	 * @return
+	 */
 	public int addUser(User user) {
-		//associate a keyuri that can be included in the event
-		String authKeyUri = Constants.RMAP_BASE_URL + "authids/" + Utils.generateRandomString(32);
+		//TODO: this is a temporary measure - need to calculate authid using base64 of email + IDproviders
+		String authKeyUri = Constants.RMAP_BASE_URL + Constants.AUTH_ID_FOLDER + "/" + Utils.generateRandomString(32);
 		User dupUser = this.getUserByAuthKeyUri(authKeyUri);
 		if (dupUser!=null){
-			authKeyUri = Constants.RMAP_BASE_URL + "authids/" + Utils.generateRandomString(32);
+			authKeyUri = Constants.RMAP_BASE_URL + Constants.AUTH_ID_FOLDER + "/" + Utils.generateRandomString(32);
 			dupUser = null;
 			dupUser = this.getUserByAuthKeyUri(authKeyUri);
 			if (dupUser!=null){
@@ -45,7 +49,11 @@ public class UserServiceImpl {
 		return userDao.addUser(user);
 	}
 
-	//user settings are what is available through web form
+	/**
+	 * Only updates any changed settings from the GUI - i.e. name and email
+	 * Protects the rest of the record from accidental corruption
+	 * @param user
+	 */
 	public void updateUserSettings(User updatedUser) {
 		final User user = getUserById(updatedUser.getUserId());
 		user.setName(updatedUser.getName());
@@ -55,22 +63,40 @@ public class UserServiceImpl {
 		userDao.updateUser(user);
 	}
 	
-	//update whole user record
+	/**
+	 * Updates entire user record based on User object provided
+	 * @param user
+	 */
 	public void updateUser(User user) {
 		user.setLastAccessedDate(new Date());
 		userDao.updateUser(user);		
 	}
-
+	
+	/**
+	 * Retrieves User object by searching using the userId provided
+	 * @param userId
+	 * @return
+	 */
 	public User getUserById(int userId) {
         return userDao.getUserById(userId);
 	}
 	
+	/**
+	 * Retrieves User object by searching using the authKeyUri provided
+	 * @param userId
+	 * @return
+	 */
 	public User getUserByAuthKeyUri(String authKeyUri) {
         return userDao.getUserByAuthKeyUri(authKeyUri);
 	}
 	
-	public User getUserByProviderAccount(OAuthProviderAccount account) throws RMapAuthException{
-		return userDao.getUserByProviderAccount(account);
+	/**
+	 * Retrieves User object by matching the idProvider name and idProviderAccountId provided
+	 * @param userId
+	 * @return
+	 */	
+	public User getUserByProviderAccount(String idProvider, String idProviderId) throws RMapAuthException{
+		return userDao.getUserByProviderAccount(idProvider, idProviderId);
 	}
 	
 	
