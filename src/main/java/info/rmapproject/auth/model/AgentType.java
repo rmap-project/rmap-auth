@@ -5,9 +5,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * 
- * @author khanson
  * Lookup table for agent types
+ * @author khanson
  * 
  */
 

@@ -3,6 +3,7 @@ package info.rmapproject.auth.service;
 import info.rmapproject.auth.exception.ErrorCode;
 import info.rmapproject.auth.exception.RMapAuthException;
 import info.rmapproject.auth.model.User;
+import info.rmapproject.auth.model.UserIdentityProvider;
 import info.rmapproject.core.exception.RMapDefectiveArgumentException;
 import info.rmapproject.core.exception.RMapException;
 import info.rmapproject.core.model.agent.RMapAgent;
@@ -12,6 +13,7 @@ import info.rmapproject.core.rmapservice.RMapServiceFactoryIOC;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,9 @@ public class UserRMapAgentServiceImpl {
 	//private static final Logger logger = LoggerFactory.getLogger(ApiKeyServiceImpl.class);
 	@Autowired
 	UserServiceImpl userService;
+	
+	@Autowired
+	UserIdProviderServiceImpl userIdProvidersService;
 	
 	public RMapEvent createOrUpdateAgentFromUser(User user) throws RMapAuthException {
 		
@@ -58,9 +63,16 @@ public class UserRMapAgentServiceImpl {
 		
 			//get other properties we need to create/update the agent
 			String agentAuthId = user.getAuthKeyUri();
-			String primaryIdProvider = user.getPrimaryIdProvider();
 			String name = user.getName();
-			
+
+			List<UserIdentityProvider> userIdProviders = userIdProvidersService.getUserIdProviders(user.getUserId());
+			String primaryIdProvider = "";
+			//TODO: this will just handle the first one for now -- need to make it support multiple idproviders
+			for (UserIdentityProvider userIdProvider:userIdProviders){			
+				primaryIdProvider = userIdProvider.getIdentityProvider();
+				break;
+			}
+						
 			//check the required properties are populated
 			if (agentAuthId==null || agentAuthId.length()==0
 					|| primaryIdProvider==null || primaryIdProvider.length()==0){
@@ -84,7 +96,7 @@ public class UserRMapAgentServiceImpl {
 				String oIdProvider = origAgent.getIdProvider().toString();
 				if (!oAuthId.equals(user.getAuthKeyUri()) 
 					|| !oName.equals(user.getName())
-					|| !oIdProvider.equals(user.getPrimaryIdProvider())){
+					|| !oIdProvider.equals(primaryIdProvider)){
 					
 					//something has changed, do update
 					event = rmapService.updateAgent(uAgentId, name, new URI(primaryIdProvider), new URI(agentAuthId), uAgentId);					

@@ -50,9 +50,11 @@
 	
     <beans:bean id="userDao" class="info.rmapproject.auth.dao.UserDaoImpl"/>
     <beans:bean id="apiKeyDao" class="info.rmapproject.auth.dao.ApiKeyDaoImpl"/> 
+    <beans:bean id="userIdProviderDao" class="info.rmapproject.auth.dao.UserIdProviderDaoImpl"/>
     
     <beans:bean id="apiKeyService" class="info.rmapproject.auth.service.ApiKeyServiceImpl"/>
     <beans:bean id="userService" class="info.rmapproject.auth.service.UserServiceImpl"/>
+    <beans:bean id="userIdProviderService" class="info.rmapproject.auth.service.UserIdProviderServiceImpl"/>
     
 	<beans:bean id="rmapAuthService" class="info.rmapproject.auth.service.RMapAuthServiceImpl"/>  
         

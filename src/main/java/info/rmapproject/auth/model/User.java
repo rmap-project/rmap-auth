@@ -41,8 +41,6 @@ public class User {
 	private Date createdDate = new Date();
 	private Date lastAccessedDate = new Date();
 	private Date cancellationDate = null;
-	private String primaryIdProvider = null;
-	private String primaryIdProviderId = null;
 	private boolean doRMapAgentSync = false;
 	
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
@@ -55,17 +53,13 @@ public class User {
 	
 	public User(){}
 	
-	public User (String name, String email, String idProvider, String idProviderId){
+	public User (String name, String email){
 		this.setName(name);	
-		this.setEmail(email);
-		this.setPrimaryIdProvider(idProvider);
-		this.setPrimaryIdProviderId(idProviderId);		
+		this.setEmail(email);	
 	}
 	
-	public User (String name, String idProvider, String idProviderId) {
+	public User (String name) {
 		this.setName(name);
-		this.setPrimaryIdProvider(idProvider);
-		this.setPrimaryIdProviderId(idProviderId);
 	}
 	
 	public int getUserId() {
@@ -137,30 +131,7 @@ public class User {
 			Set<UserIdentityProvider> userIdentityProviders) {
 		this.userIdentityProviders = userIdentityProviders;
 	}
-	
-	public String getPrimaryIdProvider() {
-		return primaryIdProvider;
-	}
-	public void setPrimaryIdProvider(String primaryIdProvider) {
-		this.primaryIdProvider = primaryIdProvider;
-	}
 
-	public String getPrimaryIdProviderId() {
-		return primaryIdProviderId;
-	}
-	public void setPrimaryIdProviderId(String primaryIdProviderId) {
-		this.primaryIdProviderId = primaryIdProviderId;
-	}
-	
-	/*
-	public Set<ApiKey> getApiKeys() {
-		return apiKeys;
-	}
-	
-	public void setApiKeys(Set<ApiKey> apiKeys) {
-		this.apiKeys = apiKeys;
-	}*/
-	
 	public boolean isDoRMapAgentSync() {
 		return doRMapAgentSync;
 	}

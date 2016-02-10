@@ -49,16 +49,19 @@ public class UserDaoImpl implements UserDao {
 	
 	@SuppressWarnings("unchecked")
 	public User getUserByProviderAccount(String idProvider, String idProviderId) throws RMapAuthException{
-        Session session = this.sessionFactory.getCurrentSession();   
-        Query query = session.createQuery("from User where primaryIdProvider=:idProvider and primaryIdProviderId=:idProviderId");
-        query.setParameter("idProvider",idProvider);
+		Session session = this.sessionFactory.getCurrentSession();   
+	    Query query = session.createSQLQuery("select Users.* from Users "
+	        									+ "inner join UserIdentityProviders on UserIdentityProviders.userId = Users.userId "
+	        									+ "where identityProvider=:idProvider and providerAccountInternalId=:idProviderId");
+	    query.setParameter("idProvider",idProvider);
         query.setParameter("idProviderId",idProviderId);
+    	
 		List<User> users = query.list();
 		if (users != null && !users.isEmpty()) {
-	        logger.info("User loaded successfully");
-			return users.get(0);
+	        logger.info("User list loaded successfully");
+	        return users.get(0);
 		}
-		else	{
+		else {
 			return null;
 		}
 	}

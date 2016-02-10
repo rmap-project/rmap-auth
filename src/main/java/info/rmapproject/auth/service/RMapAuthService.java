@@ -3,6 +3,7 @@ package info.rmapproject.auth.service;
 import info.rmapproject.auth.exception.RMapAuthException;
 import info.rmapproject.auth.model.ApiKey;
 import info.rmapproject.auth.model.User;
+import info.rmapproject.auth.model.UserIdentityProvider;
 import info.rmapproject.core.model.event.RMapEvent;
 
 import java.net.URI;
@@ -22,4 +23,7 @@ public interface RMapAuthService {
 	public User getUserByProviderAccount(String idProvider, String idProviderId) throws RMapAuthException;
 	public void validateApiKey(String accessKey, String secret) throws RMapAuthException;
 	public RMapEvent createOrUpdateAgentFromUser(User user) throws RMapAuthException;
+	public UserIdentityProvider getUserIdProvider(String idProviderUrl, String providerAccountPublicId) throws RMapAuthException;
+	public int addUserIdProvider(UserIdentityProvider userIdProvider) throws RMapAuthException;
+	public void updateUserIdProvider(UserIdentityProvider userIdProvider) throws RMapAuthException;
 }

@@ -25,11 +25,8 @@ public class UserIdentityProvider {
 	private String providerAccountInternalId;
 	private String providerAccountPublicId;
 	private String providerAccountDisplayName;
-	private String requestToken;
-	private Date tokenCreatedDate;
-	private Date tokenExpirationDate;
+	private Date lastAuthenticatedDate;
 	private Date createdDate;
-	private Date modifiedDate;
 	private int userId;
 		
 	public int getUserIdentityProviderId() {
@@ -37,24 +34,6 @@ public class UserIdentityProvider {
 	}
 	public void setUserIdentityProviderId(int userIdentityProviderId) {
 		this.userIdentityProviderId = userIdentityProviderId;
-	}
-	public String getRefreshToken() {
-		return requestToken;
-	}
-	public void setRefreshToken(String refreshToken) {
-		this.requestToken = refreshToken;
-	}
-	public Date getTokenCreatedDate() {
-		return tokenCreatedDate;
-	}
-	public void setTokenCreatedDate(Date tokenCreatedDate) {
-		this.tokenCreatedDate = tokenCreatedDate;
-	}
-	public Date getTokenExpirationDate() {
-		return tokenExpirationDate;
-	}
-	public void setTokenExpirationDate(Date tokenExpirationDate) {
-		this.tokenExpirationDate = tokenExpirationDate;
 	}
 	public String getIdentityProvider() {
 		return identityProvider;
@@ -92,13 +71,11 @@ public class UserIdentityProvider {
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
-	public Date getModifiedDate() {
-		return modifiedDate;
+	public Date getLastAuthenticatedDate() {
+		return lastAuthenticatedDate;
 	}
-	public void setModifiedDate(Date modifiedDate) {
-		this.modifiedDate = modifiedDate;
+	public void setLastAuthenticatedDate(Date lastAuthenticatedDate) {
+		this.lastAuthenticatedDate = lastAuthenticatedDate;
 	}
-	
-	
 	
 }

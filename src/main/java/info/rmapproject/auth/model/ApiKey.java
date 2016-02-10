@@ -3,6 +3,8 @@ package info.rmapproject.auth.model;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,6 +32,7 @@ public class ApiKey {
 	@NotEmpty
 	private String label;
 	private String note;
+	@Enumerated(EnumType.STRING)
 	private KeyStatus keyStatus;
 	@DateTimeFormat(pattern = "MM/dd/yyyy")
 	private Date startDate;
