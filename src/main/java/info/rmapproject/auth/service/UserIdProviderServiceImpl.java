@@ -34,9 +34,9 @@ public class UserIdProviderServiceImpl {
 		return userIdProviderDao.addUserIdProvider(userIdProvider);
 	}
 	
-	public UserIdentityProvider getUserIdProvider(String idProviderUrl, String providerAccountPublicId) 
+	public UserIdentityProvider getUserIdProvider(String idProviderUrl, String providerAccountId) 
 			throws RMapAuthException{
-		return userIdProviderDao.getUserIdProvider(idProviderUrl, providerAccountPublicId);
+		return userIdProviderDao.getUserIdProvider(idProviderUrl, providerAccountId);
 	}
 
 	public void updateUserIdProvider(UserIdentityProvider userIdProvider) 

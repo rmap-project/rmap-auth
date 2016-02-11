@@ -41,6 +41,7 @@ public class ApiKey {
 	private Date createdDate=new Date();
 	private Date lastModifiedDate=new Date();
 	private Date revokedDate;
+	private boolean includeInEvent = false;
 	private int userId;
 	
 	public int getApiKeyId() {
@@ -120,6 +121,12 @@ public class ApiKey {
 	}
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+	public boolean isIncludeInEvent() {
+		return includeInEvent;
+	}
+	public void setIncludeInEvent(boolean includeInEvent) {
+		this.includeInEvent = includeInEvent;
 	}
 	
 	

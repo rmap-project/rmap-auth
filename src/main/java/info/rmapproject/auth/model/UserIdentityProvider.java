@@ -22,9 +22,10 @@ public class UserIdentityProvider {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int userIdentityProviderId;
 	private String identityProvider;
-	private String providerAccountInternalId;
+	private String providerAccountId;
 	private String providerAccountPublicId;
 	private String providerAccountDisplayName;
+	private String providerAccountProfileUrl;
 	private Date lastAuthenticatedDate;
 	private Date createdDate;
 	private int userId;
@@ -47,11 +48,11 @@ public class UserIdentityProvider {
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
-	public String getProviderAccountInternalId() {
-		return providerAccountInternalId;
+	public String getProviderAccountId() {
+		return providerAccountId;
 	}
-	public void setProviderAccountInternalId(String providerAccountInternalId) {
-		this.providerAccountInternalId = providerAccountInternalId;
+	public void setProviderAccountId(String providerAccountId) {
+		this.providerAccountId = providerAccountId;
 	}
 	public String getProviderAccountPublicId() {
 		return providerAccountPublicId;
@@ -76,6 +77,12 @@ public class UserIdentityProvider {
 	}
 	public void setLastAuthenticatedDate(Date lastAuthenticatedDate) {
 		this.lastAuthenticatedDate = lastAuthenticatedDate;
+	}
+	public String getProviderAccountProfileUrl() {
+		return providerAccountProfileUrl;
+	}
+	public void setProviderAccountProfileUrl(String providerAccountProfileUrl) {
+		this.providerAccountProfileUrl = providerAccountProfileUrl;
 	}
 	
 }

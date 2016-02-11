@@ -83,6 +83,7 @@ public class UserRMapAgentServiceImpl {
 			if (uAgentId==null) { 
 				//no id - create agent
 				event = rmapService.createAgent(name, new URI(primaryIdProvider), new URI(agentAuthId));	
+				uAgentId = event.getAssociatedAgent().getIri();
 			}
 			else if (!rmapService.isAgentId(uAgentId)){
 				//id generated but no record created yet - create agent

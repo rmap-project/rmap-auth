@@ -76,9 +76,9 @@ public class RMapAuthServiceImpl implements RMapAuthService {
 		return userIdProviderService.addUserIdProvider(userIdProvider);
 	}	
 	
-	public UserIdentityProvider getUserIdProvider(String idProviderUrl, String providerAccountPublicId) 
+	public UserIdentityProvider getUserIdProvider(String idProviderUrl, String providerAccountId) 
 			throws RMapAuthException{
-		return userIdProviderService.getUserIdProvider(idProviderUrl, providerAccountPublicId);
+		return userIdProviderService.getUserIdProvider(idProviderUrl, providerAccountId);
 	}
 	
 	public void updateUserIdProvider(UserIdentityProvider userIdProvider) throws RMapAuthException {

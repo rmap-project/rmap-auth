@@ -45,14 +45,14 @@ public class UserIdProviderDaoImpl implements UserIdProviderDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	public UserIdentityProvider getUserIdProvider(String idProviderUrl, String providerAccountPublicId) 
+	public UserIdentityProvider getUserIdProvider(String idProviderUrl, String providerAccountId) 
 			throws RMapAuthException{
         Session session = this.sessionFactory.getCurrentSession();   
         Query query = session.createQuery("from UserIdentityProvider "
         								+ "	where identityProvider=:providerUrl "
-        								+ " and providerAccountInternalId=:accountId");
+        								+ " and providerAccountId=:accountId");
         query.setParameter("providerUrl",idProviderUrl);
-        query.setParameter("accountId",providerAccountPublicId);
+        query.setParameter("accountId",providerAccountId);
 		List<UserIdentityProvider> userIdProvider = query.list();
 		if (userIdProvider != null && !userIdProvider.isEmpty()) {
 	        logger.info("User Identity Provider loaded successfully");
@@ -67,7 +67,7 @@ public class UserIdProviderDaoImpl implements UserIdProviderDao {
 	@SuppressWarnings("unchecked")
 	public List<UserIdentityProvider> getUserIdProviders(int userId) throws RMapAuthException {
 		Session session = this.sessionFactory.getCurrentSession();   
-        Query query = session.createQuery("from UserIdProvider where userId=:userId");
+        Query query = session.createQuery("from UserIdentityProvider where userId=:userId");
         query.setParameter("userId",userId);
 		List <UserIdentityProvider> userIdProviders = query.list();
         logger.info("User identity provider list loaded successfully");
