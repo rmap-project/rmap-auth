@@ -8,32 +8,29 @@ import info.rmapproject.auth.model.User;
 
 import java.net.URI;
 
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@RunWith( SpringJUnit4ClassRunner.class )
+@ContextConfiguration({ "classpath*:/spring-*-context.xml" })
 public class AuthServiceImplTest {
-	private RMapAuthService authService = null;
 	
-	@Before
-	public void setUp() throws Exception {
-		try {
-			authService = RMapAuthServiceFactory.createService();
-		} catch (Exception e) {
-			fail("Exception thrown " + e.getMessage());
-			e.printStackTrace();
-		}
-	}
+	@Autowired
+	private RMapAuthService rmapAuthService;
 	
 	@Test
 	public void testAuthObj() {
 		User user = null;
 		try {
-			user = authService.getUserById(4);
+			user = rmapAuthService.getUserById(3);
 		} catch (RMapAuthException e) {
 			fail("Exception thrown " + e.getMessage());
 		}
 		String name = user.getName();
-		assertEquals("RMap test Agent", name);	
+		assertEquals("Portico", name);	
 	}
 	
 	@Test
@@ -42,7 +39,7 @@ public class AuthServiceImplTest {
 		String secret = "rmaptest";
 		ApiKey apiKey = null;
 		try {
-			apiKey = authService.getApiKeyByKeySecret(accessKey,secret);
+			apiKey = rmapAuthService.getApiKeyByKeySecret(accessKey,secret);
 		} catch (RMapAuthException e) {
 			fail("Exception thrown " + e.getMessage());
 		}
@@ -55,7 +52,7 @@ public class AuthServiceImplTest {
 		String secret = "rmaptest";
 		URI agentUri = null;
 		try {
-			agentUri = authService.getAgentUriByKeySecret(accessKey,secret);
+			agentUri = rmapAuthService.getAgentUriByKeySecret(accessKey,secret);
 		} catch (RMapAuthException e) {
 			e.printStackTrace();
 		}
@@ -64,16 +61,41 @@ public class AuthServiceImplTest {
 	
 	@Test
 	public void testGetUserById() {
-		int userId = 4;
+		int userId = 3;
 		User user = null;
 		try {
-			user = authService.getUserById(userId);
+			user = rmapAuthService.getUserById(userId);
 		} catch (RMapAuthException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		assertEquals(user.getRmapAgentUri(),"ark:/22573/rmaptestagent");
+		assertEquals(user.getRmapAgentUri(),"ark:/22573/rmd18m7mj4");
 	}
+	
+	@Test
+	public void testValidateKey() {
+		String accessKey = "jhu";
+		String secret = "jhu";
+		try {
+			rmapAuthService.validateApiKey(accessKey, secret);
+		} catch (RMapAuthException e) {
+			// TODO Auto-generated catch block
+			fail(e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testGetUserByKeySecret() {
+		String accessKey = "jhu";
+		String secret = "jhu";
+		try {
+			rmapAuthService.getUserByKeySecret(accessKey, secret);
+		} catch (RMapAuthException e) {
+			// TODO Auto-generated catch block
+			fail(e.getMessage());
+		}
+	}
+	
 	
 	
 		

@@ -6,7 +6,10 @@ import info.rmapproject.auth.exception.RMapAuthException;
 import info.rmapproject.auth.model.User;
 import info.rmapproject.auth.utils.Constants;
 import info.rmapproject.auth.utils.Utils;
+import info.rmapproject.core.idservice.IdService;
+import info.rmapproject.core.utils.ConfigUtils;
 
+import java.net.URI;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,9 @@ public class UserServiceImpl {
 
 //private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 	
+	@Autowired 
+	IdService rmapIdService;
+	
 	@Autowired
 	UserDao userDao; 	
 	
@@ -34,18 +40,28 @@ public class UserServiceImpl {
 	 * @return
 	 */
 	public int addUser(User user) {
-		//TODO: this is a temporary measure - need to calculate authid using base64 of email + IDproviders
-		String authKeyUri = Constants.RMAP_BASE_URL + Constants.AUTH_ID_FOLDER + "/" + Utils.generateRandomString(32);
+		//TODO: this is a temporary measure - need to calculate authorization key using base64 of email + IDproviders
+		String baseUrl = ConfigUtils.getPropertyValue(Constants.RMAP_AUTH_PROPFILE, Constants.RMAP_BASE_URL_KEY);
+		
+		String authKeyUri = baseUrl + Constants.AUTH_ID_FOLDER + "/" + Utils.generateRandomString(32);
 		User dupUser = this.getUserByAuthKeyUri(authKeyUri);
 		if (dupUser!=null){
-			authKeyUri = Constants.RMAP_BASE_URL + Constants.AUTH_ID_FOLDER + "/" + Utils.generateRandomString(32);
+			authKeyUri = baseUrl + Constants.AUTH_ID_FOLDER + "/" + Utils.generateRandomString(32);
 			dupUser = null;
 			dupUser = this.getUserByAuthKeyUri(authKeyUri);
 			if (dupUser!=null){
-				throw new RMapAuthException(ErrorCode.ER_PROBLEM_GENERATING_NEW_APIKEY.getMessage());
+				throw new RMapAuthException(ErrorCode.ER_PROBLEM_GENERATING_NEW_AUTHKEYURI.getMessage());
 			}
 		}
 		user.setAuthKeyUri(authKeyUri);
+		
+		URI agentUri = null;
+		try {
+			agentUri = rmapIdService.createId();
+		} catch (Exception e) {
+			throw new RMapAuthException(ErrorCode.ER_PROBLEM_GENERATING_NEW_AGENTURI.getMessage(), e);
+		}
+		user.setRmapAgentUri(agentUri.toString());
 		return userDao.addUser(user);
 	}
 
@@ -97,6 +113,16 @@ public class UserServiceImpl {
 	 */	
 	public User getUserByProviderAccount(String idProvider, String idProviderId) throws RMapAuthException{
 		return userDao.getUserByProviderAccount(idProvider, idProviderId);
+	}
+
+	/**
+	 * Retrieves User object by matching the API key and secret provided
+	 * @param key
+	 * @param secret
+	 * @return
+	 */	
+	public User getUserByKeySecret(String key, String secret) throws RMapAuthException{
+		return userDao.getUserByKeySecret(key, secret);
 	}
 	
 	

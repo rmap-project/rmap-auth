@@ -8,8 +8,8 @@ import info.rmapproject.core.exception.RMapDefectiveArgumentException;
 import info.rmapproject.core.exception.RMapException;
 import info.rmapproject.core.model.agent.RMapAgent;
 import info.rmapproject.core.model.event.RMapEvent;
+import info.rmapproject.core.model.request.RMapRequestAgent;
 import info.rmapproject.core.rmapservice.RMapService;
-import info.rmapproject.core.rmapservice.RMapServiceFactoryIOC;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -24,43 +24,40 @@ import org.springframework.stereotype.Service;
  *
  */
 
-@Service("rMapAgentService")
+@Service("userRMapAgentService")
 public class UserRMapAgentServiceImpl {
 
 	//private static final Logger logger = LoggerFactory.getLogger(ApiKeyServiceImpl.class);
+	@Autowired
+	RMapService rmapService;
+	
 	@Autowired
 	UserServiceImpl userService;
 	
 	@Autowired
 	UserIdProviderServiceImpl userIdProvidersService;
 	
-	public RMapEvent createOrUpdateAgentFromUser(User user) throws RMapAuthException {
-		
-		RMapService rmapService = null;
+	public RMapEvent createOrUpdateAgentFromUser(int userId) throws RMapAuthException {
 		RMapEvent event = null;
 
+		User user = userService.getUserById(userId);
 		if (user==null){
-			throw new RMapAuthException(ErrorCode.ER_NULL_USER_PROVIDED.getMessage());
+			throw new RMapAuthException(ErrorCode.ER_USER_AGENT_NOT_FORMED_IN_DB.getMessage());
 		}
-
+		
 		if (!user.isDoRMapAgentSync()){
-			throw new RMapAuthException(ErrorCode.ER_AGENT_SYNC_NOT_CONFIGURED.getMessage());
+			//no need to update
+			return null;
 		}
 		
-		//we have a user and we are permitted to synchronize the user in rmap... proceed...
+		//we are permitted to synchronize the user in rmap... proceed...
 		try {
-
-			rmapService = RMapServiceFactoryIOC.getFactory().createService();
-
 			String sAgentId = user.getRmapAgentUri();	
-			URI uAgentId = null;	
-			
-			//is there already an RMapAgent for this user?
-			if (user.hasRMapAgent()){
-				//there is an agent id already, let's use that
-				uAgentId = new URI(sAgentId);
+			if (sAgentId==null){
+				throw new RMapAuthException(ErrorCode.ER_USER_AGENT_NOT_FORMED_IN_DB.getMessage());
 			}
-		
+			URI uAgentId = new URI(sAgentId);
+
 			//get other properties we need to create/update the agent
 			String agentAuthId = user.getAuthKeyUri();
 			String name = user.getName();
@@ -80,16 +77,8 @@ public class UserRMapAgentServiceImpl {
 			}	
 			
 			//if agent isn't in the triplestore, create it!  otherwise, update it
-			if (uAgentId==null) { 
-				//no id - create agent
-				event = rmapService.createAgent(name, new URI(primaryIdProvider), new URI(agentAuthId));	
-				uAgentId = event.getAssociatedAgent().getIri();
-			}
-			else if (!rmapService.isAgentId(uAgentId)){
-				//id generated but no record created yet - create agent
-				event = rmapService.createAgent(uAgentId, name, new URI(primaryIdProvider), new URI(agentAuthId), uAgentId);
-			}
-			else if (rmapService.isAgentId(uAgentId)){ 
+			RMapRequestAgent reqAgent  = new RMapRequestAgent(uAgentId);
+			if (rmapService.isAgentId(uAgentId)){
 				//rmap agent exists - but has there been a change?
 				RMapAgent origAgent = rmapService.readAgent(uAgentId);
 				String oAuthId = origAgent.getAuthId().toString();
@@ -100,12 +89,13 @@ public class UserRMapAgentServiceImpl {
 					|| !oIdProvider.equals(primaryIdProvider)){
 					
 					//something has changed, do update
-					event = rmapService.updateAgent(uAgentId, name, new URI(primaryIdProvider), new URI(agentAuthId), uAgentId);					
-				}
-
+					event = rmapService.updateAgent(uAgentId, name, new URI(primaryIdProvider), new URI(agentAuthId), reqAgent);					
+				}				
 			}
-
-			user.setRmapAgentUri(uAgentId.toString());
+			else { 
+				//id generated but no record created yet - create agent
+				event = rmapService.createAgent(uAgentId, name, new URI(primaryIdProvider), new URI(agentAuthId), reqAgent);
+			}
 			userService.updateUser(user);
 			
 		} catch (URISyntaxException uriEx) {

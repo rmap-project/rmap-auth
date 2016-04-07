@@ -1,6 +1,7 @@
 package info.rmapproject.auth.dao;
 
 import info.rmapproject.auth.exception.RMapAuthException;
+import info.rmapproject.auth.model.ApiKey;
 import info.rmapproject.auth.model.User;
 
 import java.util.List;
@@ -80,6 +81,30 @@ public class UserDaoImpl implements UserDao {
 			return null;
 		}
 	}
+    
+    @SuppressWarnings("unchecked")
+	public User getUserByKeySecret(String key, String secret) throws RMapAuthException {
+        Session session = this.sessionFactory.getCurrentSession();   
+        Query query = session.createQuery("from ApiKey where accessKey=:key and secret=:secret");
+	    query.setParameter("key",key);
+        query.setParameter("secret",secret);
+        List<ApiKey> apiKeys = query.list();
+        ApiKey apiKey = null;
+		if (apiKeys != null && !apiKeys.isEmpty()) {
+	        logger.info("Api key list loaded successfully");
+			apiKey = apiKeys.get(0);
+		}
+		else	{
+			return null;
+		}		
+		User user = null;
+		if (apiKey!=null){
+			int userId = apiKey.getUserId();
+			user = this.getUserById(userId);
+		}
+		return user;		
+	}
+    
     
     
 	

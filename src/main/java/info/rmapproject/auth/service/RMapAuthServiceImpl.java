@@ -63,13 +63,17 @@ public class RMapAuthServiceImpl implements RMapAuthService {
 	public User getUserById(int userId) throws RMapAuthException{
 		return userService.getUserById(userId);
 	}
+	
+	public User getUserByKeySecret(String key, String secret) throws RMapAuthException{
+		return userService.getUserByKeySecret(key, secret);
+	}
 
 	public User getUserByProviderAccount(String idProvider, String idProviderId) throws RMapAuthException{
 		return userService.getUserByProviderAccount(idProvider, idProviderId);
 	}
 	
-	public RMapEvent createOrUpdateAgentFromUser(User user) throws RMapAuthException {
-		return agentService.createOrUpdateAgentFromUser(user);
+	public RMapEvent createOrUpdateAgentFromUser(int userId) throws RMapAuthException {
+		return agentService.createOrUpdateAgentFromUser(userId);
 	}	
 
 	public int addUserIdProvider(UserIdentityProvider userIdProvider) throws RMapAuthException {

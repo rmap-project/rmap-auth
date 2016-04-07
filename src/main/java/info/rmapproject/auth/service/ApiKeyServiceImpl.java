@@ -7,6 +7,7 @@ import info.rmapproject.auth.model.ApiKey;
 import info.rmapproject.auth.model.KeyStatus;
 import info.rmapproject.auth.utils.Constants;
 import info.rmapproject.auth.utils.Utils;
+import info.rmapproject.core.idservice.IdService;
 
 import java.net.URI;
 import java.util.Calendar;
@@ -31,6 +32,9 @@ public class ApiKeyServiceImpl {
 	
 	@Autowired
 	ApiKeyDao apiKeyDao;
+	
+	@Autowired
+	IdService rmapIdService;
    
 	public int addApiKey(ApiKey apiKey) throws RMapAuthException {
 		//generate a new key/secret
@@ -53,18 +57,13 @@ public class ApiKeyServiceImpl {
 		apiKey.setSecret(newSecret);
 		
 		//associate a keyuri that can be included in the event
-		String keyUri = Constants.RMAP_BASE_URL + Constants.KEY_ID_FOLDER + "/" + Utils.generateRandomString(Constants.KEY_ID_LENGTH);
-		ApiKey dupKey = this.getApiKeyByKeyUri(keyUri);
-		if (dupKey!=null){
-			keyUri = Constants.RMAP_BASE_URL + Constants.KEY_ID_FOLDER + "/" + Utils.generateRandomString(Constants.KEY_ID_LENGTH);
-			dupKey = null;
-			dupKey = this.getApiKeyByKeyUri(keyUri);
-			if (dupKey!=null){
-				throw new RMapAuthException(ErrorCode.ER_PROBLEM_GENERATING_NEW_APIKEY.getMessage());
-			}
+		URI keyUri = null;
+		try {
+			keyUri = rmapIdService.createId();
+		} catch (Exception e) {
+			throw new RMapAuthException(ErrorCode.ER_PROBLEM_GENERATING_NEW_APIKEY.getMessage(), e);
 		}
-		apiKey.setKeyUri(keyUri);
-		
+		apiKey.setKeyUri(keyUri.toString());
 		return apiKeyDao.addApiKey(apiKey);
 	}
 

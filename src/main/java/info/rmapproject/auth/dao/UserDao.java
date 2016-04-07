@@ -13,4 +13,5 @@ public interface UserDao {
 	public User getUserById(int userId) throws RMapAuthException;
 	public User getUserByAuthKeyUri(String authKeyUri) throws RMapAuthException;	
 	public User getUserByProviderAccount(String idProvider, String idProviderId) throws RMapAuthException;
+	public User getUserByKeySecret(String key, String secret) throws RMapAuthException;
 }

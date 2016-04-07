@@ -20,9 +20,10 @@ public interface RMapAuthService {
 	public void updateUser(User user) throws RMapAuthException;
 	public void updateUserSettings(User user) throws RMapAuthException;
 	public User getUserById(int userId) throws RMapAuthException;
+	public User getUserByKeySecret(String accessKey, String secret) throws RMapAuthException;
 	public User getUserByProviderAccount(String idProvider, String idProviderId) throws RMapAuthException;
 	public void validateApiKey(String accessKey, String secret) throws RMapAuthException;
-	public RMapEvent createOrUpdateAgentFromUser(User user) throws RMapAuthException;
+	public RMapEvent createOrUpdateAgentFromUser(int userId) throws RMapAuthException;
 	public UserIdentityProvider getUserIdProvider(String idProviderUrl, String providerAccountPublicId) throws RMapAuthException;
 	public int addUserIdProvider(UserIdentityProvider userIdProvider) throws RMapAuthException;
 	public void updateUserIdProvider(UserIdentityProvider userIdProvider) throws RMapAuthException;
