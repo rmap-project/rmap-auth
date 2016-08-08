@@ -2,7 +2,10 @@ package info.rmapproject.auth.utils;
 
 
 public final class Constants  {
-
+	
+	  /**File path to RMap Auth Spring context*/
+	  public static final String SPRING_CONFIG_FILEPATH = "spring-rmapauth-context.xml";
+	
 	  /**Name of properties file for RMap API properties*/
 	  public static final String RMAP_AUTH_PROPFILE = "rmapauth";
 	  /**Key to retrieve base URL path for RMap*/

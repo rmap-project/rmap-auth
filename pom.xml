@@ -60,11 +60,6 @@
 			<version>${org.aspectj-version}</version>
 		</dependency>
 			
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20151123</version>
-		</dependency>
 		
         <!-- needed for testing on desktop -->
 		<dependency>
