@@ -14,6 +14,8 @@
     <import resource="classpath*:spring-rmapcore-context.xml" />
     
 	<bean id="rmapauthProps" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	  <!-- set this as true so that it will use other properties files if embedded in another context-->
+	  <property name="ignoreUnresolvablePlaceholders" value="true"/>
 	  <property name="location" value="classpath:rmapauth.properties"/>
 	</bean>
 	

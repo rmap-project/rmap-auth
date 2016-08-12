@@ -13,10 +13,16 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class RMapAuthServiceFactory {
 
+	/**Name of RMapAuthService bean*/
 	public static final String RMAPAUTHSERVICE_BEANNAME = "RMapAuthService";
 	
+	/**RMapAuthService object**/
 	private static RMapAuthService rmapAuthService;
 	
+	/**
+	 * Create RMapAuthService object instance based on bean name
+	 * @return
+	 */
 	public static RMapAuthService createService() {
 		try {
 			if (rmapAuthService == null){

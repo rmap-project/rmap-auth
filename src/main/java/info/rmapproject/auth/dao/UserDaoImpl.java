@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 /**
- * 
+ * Implementation of UserDao used to interact with data in the User table
  * @author khanson
  *
  */
@@ -25,29 +25,48 @@ public class UserDaoImpl implements UserDao {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
 
+	/**
+	 * Data base session factory instance
+	 */
     @Autowired
     private SessionFactory sessionFactory;
  	
+	/* (non-Javadoc)
+	 * @see info.rmapproject.auth.dao.UserDao#addUser(User)
+	 */
+    @Override
 	public int addUser(User user) throws RMapAuthException {
         Session session = this.sessionFactory.getCurrentSession();
         session.persist(user);
         logger.info("User record saved successfully, User Details=" + user);	
         return user.getUserId();
 	}
-
+    
+	/* (non-Javadoc)
+	 * @see info.rmapproject.auth.dao.UserDao#updateUser(User)
+	 */
+    @Override
 	public void updateUser(User user) throws RMapAuthException {
         Session session = this.sessionFactory.getCurrentSession();
         session.update(user);
         logger.info("User record updated successfully, User Details=" + user);
 	}
 
+	/* (non-Javadoc)
+	 * @see info.rmapproject.auth.dao.UserDao#getUserById(int)
+	 */
+    @Override
 	public User getUserById(int userId) throws RMapAuthException {
         Session session = this.sessionFactory.getCurrentSession();      
         User user = (User) session.load(User.class, userId);
         logger.info("User record loaded successfully, User details=" + user);
         return user;
 	}
-	
+    
+	/* (non-Javadoc)
+	 * @see info.rmapproject.auth.dao.UserDao#getUserByProviderAccount(String,String)
+	 */
+    @Override
 	@SuppressWarnings("unchecked")
 	public User getUserByProviderAccount(String idProvider, String providerAccountId) throws RMapAuthException{
 		Session session = this.sessionFactory.getCurrentSession();   
@@ -67,6 +86,10 @@ public class UserDaoImpl implements UserDao {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see info.rmapproject.auth.dao.UserDao#getUserByAuthKeyUri(String)
+	 */
+    @Override
     @SuppressWarnings("unchecked")
 	public User getUserByAuthKeyUri(String authKeyUri) throws RMapAuthException {
         Session session = this.sessionFactory.getCurrentSession();   
@@ -82,6 +105,10 @@ public class UserDaoImpl implements UserDao {
 		}
 	}
     
+	/* (non-Javadoc)
+	 * @see info.rmapproject.auth.dao.UserDao#getUserByKeySecret(String,String)
+	 */
+    @Override
     @SuppressWarnings("unchecked")
 	public User getUserByKeySecret(String key, String secret) throws RMapAuthException {
         Session session = this.sessionFactory.getCurrentSession();   

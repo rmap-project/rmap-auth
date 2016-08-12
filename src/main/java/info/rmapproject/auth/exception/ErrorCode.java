@@ -6,8 +6,8 @@ import java.util.Properties;
 
 
 /**
- * @author khanson
  * Custom error codes for RMap Authentication
+ * @author khanson
  */
 public enum ErrorCode {		
 	ER_ACCESSCODE_SECRET_NOT_FOUND (4019001),
@@ -21,21 +21,40 @@ public enum ErrorCode {
 	ER_PROBLEM_GENERATING_NEW_AUTHKEYURI (4019009),
 	ER_PROBLEM_GENERATING_NEW_AGENTURI (4019010);
 	
-
+	/**
+	 * Error code number
+	 */
 	private final int number;
 
+	/**
+	 * Initiate ErrorCode instance using error code number
+	 * @param number
+	 */
 	private ErrorCode (int number) {
 		this.number = number;
 	}
 
+	/**
+	 * Retrieve error code number for current instance
+	 * @return
+	 */
 	public int getNumber()  {
 		return number;
 	}
 
+	/**
+	 * Error message as string
+	 */
+	private String message;
+
+	/**
+	 * System properties object instance
+	 */
 	private static Properties properties;
 
-	private String message;
-	
+	/**
+	 * Initiate property value relevant to Error Code processing
+	 */
     private void init() {
 		
 		try {	
@@ -54,8 +73,8 @@ public enum ErrorCode {
     }
     	
 	/**
-	 * @return String
 	 * Returns the message that corresponds to the error code.
+	 * @return String
 	 */
 	public String getMessage() {
         if (this.message == null) {

@@ -9,7 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * 
+ * Java representation of UserIdentityProviders database table.
+ * Stores details of ID provider accounts for User
  * @author khanson
  *
  */
@@ -18,16 +19,33 @@ import javax.persistence.Table;
 @Table(name="UserIdentityProviders")
 public class UserIdentityProvider {
 	
+	/**Primary key for UserIdentityProviders table, incrementing integer*/
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int userIdentityProviderId;
+	
+	/**Name of identityProvider as a URL e.g. http://www.google.com*/
 	private String identityProvider;
+	
+	/**Account ID for user's id provider account*/
 	private String providerAccountId;
+	
+	/**Public account ID for user's id provider account e.g. gmail address, twitter handle, orcid id*/
 	private String providerAccountPublicId;
+	
+	/**Display name for user's id provider account e.g. Karen Hanson*/
 	private String providerAccountDisplayName;
+	
+	/**URL for user's id provider account e.g. google plus profile, twitter page.*/
 	private String providerAccountProfileUrl;
+	
+	/**Date the user was last authenicated i.e. logged in*/
 	private Date lastAuthenticatedDate;
+	
+	/**Date id provider account record created**/
 	private Date createdDate;
+	
+	/**Users.userId associated with account*/
 	private int userId;
 		
 	public int getUserIdentityProviderId() {

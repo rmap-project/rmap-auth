@@ -1,5 +1,11 @@
 package info.rmapproject.auth.utils;
 
+/**
+ * Class to define system constants that do not need to be configured 
+ * externally as a property
+ * @author khanson
+ *
+ */
 
 public final class Constants  {
 	
@@ -20,15 +26,11 @@ public final class Constants  {
 	  
 	  /**Used to form path for AUTH IDs, formed to represent Agents*/
 	  public static final String AUTH_ID_FOLDER = "/authids";  
-	  /**Used to form path for KEY IDs, formed to represent Keys*/
-	  public static final String KEY_ID_FOLDER = "/keyids";  
 	  
 	  /**Length of API access key*/
-	  public static final int ACCESS_KEY_LENGTH = 32;  
+	  public static final int ACCESS_KEY_LENGTH = 16;  
 	  /**Length of secret that goes with API access key*/
-	  public static final int SECRET_LENGTH = 64;  
-	  /**Length of ID that is used to form key id. Key ID is not used to access API, it is a unique ID given to the key.*/
-	  public static final int KEY_ID_LENGTH = 32;  
+	  public static final int SECRET_LENGTH = 16;  
 	  
 	  private Constants(){
 		    //this prevents even the native class from calling this ctor as well :

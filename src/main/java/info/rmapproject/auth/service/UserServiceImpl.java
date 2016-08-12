@@ -4,6 +4,7 @@ import info.rmapproject.auth.dao.UserDao;
 import info.rmapproject.auth.exception.ErrorCode;
 import info.rmapproject.auth.exception.RMapAuthException;
 import info.rmapproject.auth.model.User;
+import info.rmapproject.auth.model.UserIdentityProvider;
 import info.rmapproject.auth.utils.Constants;
 import info.rmapproject.auth.utils.Utils;
 import info.rmapproject.core.idservice.IdService;
@@ -11,13 +12,14 @@ import info.rmapproject.core.utils.ConfigUtils;
 
 import java.net.URI;
 import java.util.Date;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 
+ * Service for access to Users related methods
  * @author khanson
  *
  */
@@ -27,32 +29,23 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl {
 
 //private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
-	
+
+	/**RMap core Id Generator Service*/
 	@Autowired 
 	IdService rmapIdService;
-	
+
+	/**Users table data access component*/
 	@Autowired
 	UserDao userDao; 	
 	
 	/**
-	 * Creates a new user based on User object provided
+	 * Create a new user
 	 * @param user
 	 * @return
 	 */
 	public int addUser(User user) {
-		//TODO: this is a temporary measure - need to calculate authorization key using base64 of email + IDproviders
-		String baseUrl = ConfigUtils.getPropertyValue(Constants.RMAP_AUTH_PROPFILE, Constants.RMAP_BASE_URL_KEY);
 		
-		String authKeyUri = baseUrl + Constants.AUTH_ID_FOLDER + "/" + Utils.generateRandomString(32);
-		User dupUser = this.getUserByAuthKeyUri(authKeyUri);
-		if (dupUser!=null){
-			authKeyUri = baseUrl + Constants.AUTH_ID_FOLDER + "/" + Utils.generateRandomString(32);
-			dupUser = null;
-			dupUser = this.getUserByAuthKeyUri(authKeyUri);
-			if (dupUser!=null){
-				throw new RMapAuthException(ErrorCode.ER_PROBLEM_GENERATING_NEW_AUTHKEYURI.getMessage());
-			}
-		}
+		String authKeyUri = generateAuthKey(user);
 		user.setAuthKeyUri(authKeyUri);
 		
 		URI agentUri = null;
@@ -64,11 +57,41 @@ public class UserServiceImpl {
 		user.setRmapAgentUri(agentUri.toString());
 		return userDao.addUser(user);
 	}
+	
+	/** 
+	 * Generate an authentication key for the user. This uses the idprovider name combined with
+	 * the user's idP identifier to generate a sha256 hash string that forms the authentication key.
+	 * Given these two pieces of information a 3rd party user can verify someone is who they say they are
+	 * @param user
+	 * @return
+	 */
+	public String generateAuthKey(User user){
+		try {
+			Set<UserIdentityProvider> idps = user.getUserIdentityProviders();
+			
+			UserIdentityProvider idp = idps.iterator().next();	
+			
+			String idpName=idp.getIdentityProvider();
+			String idpAccountId=idp.getProviderAccountId();
+			String sha256IdHash = Utils.getSha256Hash(idpName + idpAccountId);
+				
+			String baseUrl = ConfigUtils.getPropertyValue(Constants.RMAP_AUTH_PROPFILE, Constants.RMAP_BASE_URL_KEY);
+			String authKeyUri = baseUrl + Constants.AUTH_ID_FOLDER + "/" + sha256IdHash;
+					
+			User dupUser = getUserByAuthKeyUri(authKeyUri);
+			if (dupUser!=null){
+				throw new RMapAuthException(ErrorCode.ER_PROBLEM_GENERATING_NEW_AUTHKEYURI.getMessage());				
+			}			
+			return authKeyUri;
+		} catch (Exception ex){
+			throw new RMapAuthException(ErrorCode.ER_PROBLEM_GENERATING_NEW_AUTHKEYURI.getMessage(), ex);
+		}
+	}
 
 	/**
 	 * Only updates any changed settings from the GUI - i.e. name and email
 	 * Protects the rest of the record from accidental corruption
-	 * @param user
+	 * @param updatedUser
 	 */
 	public void updateUserSettings(User updatedUser) {
 		final User user = getUserById(updatedUser.getUserId());
@@ -89,7 +112,7 @@ public class UserServiceImpl {
 	}
 	
 	/**
-	 * Retrieves User object by searching using the userId provided
+	 * Retrieve a user matching the userId provided
 	 * @param userId
 	 * @return
 	 */
@@ -105,25 +128,28 @@ public class UserServiceImpl {
 	public User getUserByAuthKeyUri(String authKeyUri) {
         return userDao.getUserByAuthKeyUri(authKeyUri);
 	}
-	
+
 	/**
-	 * Retrieves User object by matching the idProvider name and idProviderAccountId provided
-	 * @param userId
+	 * Retrieve the user that matches a specific id provider account
+	 * @param idProvider
+	 * @param idProviderId
 	 * @return
-	 */	
+	 * @throws RMapAuthException
+	 */
 	public User getUserByProviderAccount(String idProvider, String idProviderId) throws RMapAuthException{
 		return userDao.getUserByProviderAccount(idProvider, idProviderId);
 	}
 
+
 	/**
-	 * Retrieves User object by matching the API key and secret provided
+	 * Retrieve the user that matches the key/secret combination provided
 	 * @param key
 	 * @param secret
 	 * @return
-	 */	
+	 * @throws RMapAuthException
+	 */
 	public User getUserByKeySecret(String key, String secret) throws RMapAuthException{
 		return userDao.getUserByKeySecret(key, secret);
 	}
-	
 	
 }

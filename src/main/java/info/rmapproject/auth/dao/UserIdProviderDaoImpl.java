@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 /**
- * 
+ * Implementation of UserIdProviderDao used to interact with data in the UserIdProvider table
  * @author khanson
  *
  */
@@ -24,10 +24,16 @@ public class UserIdProviderDaoImpl implements UserIdProviderDao {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserIdProviderDaoImpl.class);
 
+	/**
+	 * Data base session factory instance
+	 */
     @Autowired
     private SessionFactory sessionFactory;
 
-	@Override
+	/* (non-Javadoc)
+	 * @see info.rmapproject.auth.dao.UserIdProviderDao#addUserIdProvider(UserIdentityProvider)
+	 */
+    @Override
 	public int addUserIdProvider(UserIdentityProvider userIdProvider)
 			throws RMapAuthException {
         Session session = this.sessionFactory.getCurrentSession();
@@ -36,14 +42,21 @@ public class UserIdProviderDaoImpl implements UserIdProviderDao {
         return userIdProvider.getUserIdentityProviderId();
 	}
 
-	@Override
+	/* (non-Javadoc)
+	 * @see info.rmapproject.auth.dao.UserIdProviderDao#updateUserIdProvider(UserIdentityProvider)
+	 */
+    @Override
 	public void updateUserIdProvider(UserIdentityProvider userIdProvider)
 			throws RMapAuthException {
         Session session = this.sessionFactory.getCurrentSession();
         session.update(userIdProvider);
         logger.info("User record updated successfully, Details=" + userIdProvider);		
 	}
-
+    
+	/* (non-Javadoc)
+	 * @see info.rmapproject.auth.dao.UserIdProviderDao#getUserIdProvider(String,String)
+	 */
+    @Override
 	@SuppressWarnings("unchecked")
 	public UserIdentityProvider getUserIdProvider(String idProviderUrl, String providerAccountId) 
 			throws RMapAuthException{
@@ -63,7 +76,11 @@ public class UserIdProviderDaoImpl implements UserIdProviderDao {
 		}
 		
 	}
-	
+    
+	/* (non-Javadoc)
+	 * @see info.rmapproject.auth.dao.UserIdProviderDao#getUserIdProviders(int)
+	 */
+    @Override
 	@SuppressWarnings("unchecked")
 	public List<UserIdentityProvider> getUserIdProviders(int userId) throws RMapAuthException {
 		Session session = this.sessionFactory.getCurrentSession();   

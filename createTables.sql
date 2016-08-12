@@ -1,9 +1,3 @@
-CREATE TABLE `AgentTypes` (
-  `uri` varchar(256) NOT NULL,
-  `label` varchar(128) NOT NULL,
-  PRIMARY KEY (`uri`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 CREATE TABLE `ApiKeys` (
   `apiKeyId` int(11) NOT NULL AUTO_INCREMENT,
   `accessKey` varchar(256) DEFAULT NULL,
@@ -22,24 +16,6 @@ CREATE TABLE `ApiKeys` (
   PRIMARY KEY (`apiKeyId`),
   UNIQUE KEY `apiKeyId_UNIQUE` (`apiKeyId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
-
-CREATE TABLE `IdentityProviders` (
-  `identityProvidersId` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(256) DEFAULT NULL,
-  `clientId` varchar(256) DEFAULT NULL,
-  `secret` varchar(512) DEFAULT NULL,
-  `authUrl` varchar(256) DEFAULT NULL,
-  `logoPath` varchar(512) DEFAULT NULL,
-  PRIMARY KEY (`identityProvidersId`),
-  UNIQUE KEY `identityProvidersId_UNIQUE` (`identityProvidersId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-CREATE TABLE `UserAgentTypes` (
-  `userAgentTypeId` int(11) NOT NULL AUTO_INCREMENT,
-  `uri` varchar(256) NOT NULL,
-  `userId` int(11) NOT NULL,
-  PRIMARY KEY (`userAgentTypeId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `UserIdentityProviders` (
   `userIdentityProviderId` int(11) NOT NULL AUTO_INCREMENT,

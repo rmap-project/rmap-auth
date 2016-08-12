@@ -14,7 +14,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
- * 
+ * Java representation of ApiKeys database table.
+ * Api Keys are associated with a user that logged into the GUI
+ * The keys can be used for write access to the RMap API.
  * @author khanson
  *
  */
@@ -23,25 +25,55 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Table(name="ApiKeys")
 public class ApiKey {
 	
+	/**Unique id column for API Key table**/
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int apiKeyId;
+	
+	/**String of base64 characters that are used as a key to write to RMap API**/
 	private String accessKey;
+	
+	/**String of base64 characters, used with the accessKey as a kind of password, 
+	 * the accessKey/secret combo is for API write access.*/
 	private String secret;
+	
+	/** Key URI is a university unique identifier to identify the specific api key used for access
+	 * there is an option to associate this key with the Event record in RMap so that you can see which
+	 * key was used to create the record.	 */
 	private String keyUri;
+	
+	/**A label associated with the key to tag or describe it*/
 	@NotEmpty
 	private String label;
+	
+	/**A longer description of the key*/
 	private String note;
+	
+	/**The status of the key (e.g. inactive, revoked)*/
 	@Enumerated(EnumType.STRING)
 	private KeyStatus keyStatus;
+	
+	/**The start date from which the key is valid. If the key is used before this date it will not work */
 	@DateTimeFormat(pattern = "MM/dd/yyyy")
 	private Date startDate;
+	
+	/**The end date for the key after which the key is no longer valid.  If the key is used after this date it will not work*/
 	@DateTimeFormat(pattern = "MM/dd/yyyy")
 	private Date endDate;
+	
+	/**The date the key was created**/
 	private Date createdDate=new Date();
+	
+	/**The date the key was last modified*/
 	private Date lastModifiedDate=new Date();
+	
+	/**The date the key was revoked (null if empty)**/
 	private Date revokedDate;
+	
+	/**Flag to include the key in the Event information of RMap so that you can identify which key created the DiSCO*/
 	private boolean includeInEvent = false;
+	
+	/**The user that the key is associated with*/
 	private int userId;
 	
 	public int getApiKeyId() {
