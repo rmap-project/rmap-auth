@@ -19,7 +19,7 @@ import javax.persistence.Table;
 @Table(name="UserIdentityProviders")
 public class UserIdentityProvider {
 	
-	/**Primary key for UserIdentityProviders table, incrementing integer*/
+	/** Primary key for UserIdentityProviders table, incrementing integer. */
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int userIdentityProviderId;
@@ -27,7 +27,7 @@ public class UserIdentityProvider {
 	/**Name of identityProvider as a URL e.g. http://www.google.com*/
 	private String identityProvider;
 	
-	/**Account ID for user's id provider account*/
+	/** Account ID for user's id provider account. */
 	private String providerAccountId;
 	
 	/**Public account ID for user's id provider account e.g. gmail address, twitter handle, orcid id*/
@@ -42,63 +42,170 @@ public class UserIdentityProvider {
 	/**Date the user was last authenicated i.e. logged in*/
 	private Date lastAuthenticatedDate;
 	
-	/**Date id provider account record created**/
+	/** Date id provider account record created*. */
 	private Date createdDate;
 	
 	/**Users.userId associated with account*/
 	private int userId;
 		
+	/**
+	 * Gets the user identity provider id.
+	 *
+	 * @return the user identity provider id
+	 */
 	public int getUserIdentityProviderId() {
 		return userIdentityProviderId;
 	}
+	
+	/**
+	 * Sets the user identity provider id.
+	 *
+	 * @param userIdentityProviderId the new user identity provider id
+	 */
 	public void setUserIdentityProviderId(int userIdentityProviderId) {
 		this.userIdentityProviderId = userIdentityProviderId;
 	}
+	
+	/**
+	 * Gets the identity provider.
+	 *
+	 * @return the identity provider
+	 */
 	public String getIdentityProvider() {
 		return identityProvider;
 	}
+	
+	/**
+	 * Sets the identity provider id.
+	 *
+	 * @param identityProvider the new identity provider id
+	 */
 	public void setIdentityProviderId(String identityProvider) {
 		this.identityProvider = identityProvider;
 	}
+	
+	/**
+	 * Gets the user id.
+	 *
+	 * @return the user id
+	 */
 	public int getUserId() {
 		return userId;
 	}
+	
+	/**
+	 * Sets the user id.
+	 *
+	 * @param userId the new user id
+	 */
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
+	
+	/**
+	 * Gets the provider account id.
+	 *
+	 * @return the provider account id
+	 */
 	public String getProviderAccountId() {
 		return providerAccountId;
 	}
+	
+	/**
+	 * Sets the provider account id.
+	 *
+	 * @param providerAccountId the new provider account id
+	 */
 	public void setProviderAccountId(String providerAccountId) {
 		this.providerAccountId = providerAccountId;
 	}
+	
+	/**
+	 * Gets the provider account public id.
+	 *
+	 * @return the provider account public id
+	 */
 	public String getProviderAccountPublicId() {
 		return providerAccountPublicId;
 	}
+	
+	/**
+	 * Sets the provider account public id.
+	 *
+	 * @param providerAccountPublicId the new provider account public id
+	 */
 	public void setProviderAccountPublicId(String providerAccountPublicId) {
 		this.providerAccountPublicId = providerAccountPublicId;
 	}
+	
+	/**
+	 * Gets the provider account display name.
+	 *
+	 * @return the provider account display name
+	 */
 	public String getProviderAccountDisplayName() {
 		return providerAccountDisplayName;
 	}
+	
+	/**
+	 * Sets the provider account display name.
+	 *
+	 * @param providerAccountDisplayName the new provider account display name
+	 */
 	public void setProviderAccountDisplayName(String providerAccountDisplayName) {
 		this.providerAccountDisplayName = providerAccountDisplayName;
 	}
+	
+	/**
+	 * Gets the created date.
+	 *
+	 * @return the created date
+	 */
 	public Date getCreatedDate() {
 		return createdDate;
 	}
+	
+	/**
+	 * Sets the created date.
+	 *
+	 * @param createdDate the new created date
+	 */
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
+	
+	/**
+	 * Gets the last authenticated date.
+	 *
+	 * @return the last authenticated date
+	 */
 	public Date getLastAuthenticatedDate() {
 		return lastAuthenticatedDate;
 	}
+	
+	/**
+	 * Sets the last authenticated date.
+	 *
+	 * @param lastAuthenticatedDate the new last authenticated date
+	 */
 	public void setLastAuthenticatedDate(Date lastAuthenticatedDate) {
 		this.lastAuthenticatedDate = lastAuthenticatedDate;
 	}
+	
+	/**
+	 * Gets the provider account profile url.
+	 *
+	 * @return the provider account profile url
+	 */
 	public String getProviderAccountProfileUrl() {
 		return providerAccountProfileUrl;
 	}
+	
+	/**
+	 * Sets the provider account profile url.
+	 *
+	 * @param providerAccountProfileUrl the new provider account profile url
+	 */
 	public void setProviderAccountProfileUrl(String providerAccountProfileUrl) {
 		this.providerAccountProfileUrl = providerAccountProfileUrl;
 	}

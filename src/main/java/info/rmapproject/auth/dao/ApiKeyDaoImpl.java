@@ -16,19 +16,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 /**
- * Implementation of ApiKeyDao used to interact with data in the ApiKey table
- * @author khanson
+ * Implementation of ApiKeyDao used to interact with data in the ApiKey table.
  *
+ * @author khanson
  */
 
 @Repository("apiKeyDao")
 public class ApiKeyDaoImpl implements ApiKeyDao {
 
+	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory.getLogger(ApiKeyDaoImpl.class);
 
-	/**
-	 * Data base session factory instance
-	 */
+	/** Data base session factory instance. */
     @Autowired
     private SessionFactory sessionFactory;
  	

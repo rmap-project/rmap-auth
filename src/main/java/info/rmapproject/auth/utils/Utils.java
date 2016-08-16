@@ -10,23 +10,22 @@ import java.util.Random;
 import javax.xml.bind.DatatypeConverter;
 
 /**
- * Utilities to support the rmap-auth component
- * @author khanson
+ * Utilities to support the rmap-auth component.
  *
+ * @author khanson
  */
 public class Utils {
 	
-	/**
-	 * Characters that are valid for use in a random string generator
-	 */
+	/** Characters that are valid for use in a random string generator. */
 	private static char[] VALID_CHARACTERS =
 		    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456879".toCharArray();
 	
 	/**
 	 * Generate a random string of the length defined
 	 * This used to create API keys and secrets.
-	 * @param numChars
-	 * @return
+	 *
+	 * @param numChars the length of the string of random characters
+	 * @return the string
 	 */
 	public static String generateRandomString(int numChars) {
 	  SecureRandom srand = new SecureRandom();
@@ -46,9 +45,10 @@ public class Utils {
 	/**
 	 * Converts a given string to a Sha256 encoded string. Used to generate
 	 * authIds
-	 * @param str
-	 * @return
-	 * @throws Exception
+	 *
+	 * @param str the string to be converted to Sha256
+	 * @return the sha 256 hash
+	 * @throws Exception the exception
 	 */
 	public static String getSha256Hash(String str) throws Exception {
 		String sha256Hash = "";

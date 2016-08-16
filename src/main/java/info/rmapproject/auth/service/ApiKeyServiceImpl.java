@@ -19,9 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service for access to ApiKey related methods
- * @author khanson
+ * Service for access to ApiKey related methods.
  *
+ * @author khanson
  */
 
 @Service("apiKeyService")
@@ -30,19 +30,20 @@ public class ApiKeyServiceImpl {
 
 	//private static final Logger logger = LoggerFactory.getLogger(ApiKeyServiceImpl.class);
 	
-	/**ApiKeys table data access component*/
+	/** ApiKeys table data access component. */
 	@Autowired
 	ApiKeyDao apiKeyDao;
 	
-	/**RMap core Id Generator Service*/
+	/** RMap core Id Generator Service. */
 	@Autowired
 	IdService rmapIdService;
    
 	/**
-	 * Add new API Key
-	 * @param apiKey
-	 * @return
-	 * @throws RMapAuthException
+	 * Add new API Key.
+	 *
+	 * @param apiKey the API key
+	 * @return the API Key ID
+	 * @throws RMapAuthException the RMap Auth exception
 	 */
 	public int addApiKey(ApiKey apiKey) throws RMapAuthException {
 		//generate a new key/secret
@@ -76,9 +77,10 @@ public class ApiKeyServiceImpl {
 	}
 
 	/**
-	 * Update API Key
-	 * @param updatedApiKey
-	 * @throws RMapAuthException
+	 * Update API Key.
+	 *
+	 * @param updatedApiKey the updated api key
+	 * @throws RMapAuthException the RMap Auth exception
 	 */
 	public void updateApiKey(ApiKey updatedApiKey) throws RMapAuthException {
 		final ApiKey apiKey = getApiKeyById(updatedApiKey.getApiKeyId());
@@ -95,52 +97,57 @@ public class ApiKeyServiceImpl {
 	}
 
 	/**
-	 * Retrieve an API key based on a specific apiKey identifier
-	 * @param apiKeyId
-	 * @return
-	 * @throws RMapAuthException
+	 * Retrieve an API key based on a specific apiKey identifier.
+	 *
+	 * @param apiKeyId the API key ID
+	 * @return the API key by API key ID
+	 * @throws RMapAuthException the RMap Auth exception
 	 */
 	public ApiKey getApiKeyById(int apiKeyId) throws RMapAuthException {
         return apiKeyDao.getApiKeyById(apiKeyId);
 	}
 	
 	/**
-	 * Retrieve an API key that matches the key/secret combination provided
-	 * @param accessKey
-	 * @param secret
-	 * @return
-	 * @throws RMapAuthException
+	 * Retrieve an API key that matches the key/secret combination provided.
+	 *
+	 * @param accessKey the access key
+	 * @param secret the secret
+	 * @return the API key by key/secret
+	 * @throws RMapAuthException the RMap Auth exception
 	 */
 	public ApiKey getApiKeyByKeySecret(String accessKey, String secret) throws RMapAuthException {
         return apiKeyDao.getApiKeyByKeySecret(accessKey, secret);		
 	}
 
 	/**
-	 * Retrieve the Agent URI that matches the key/secret combination provided
-	 * @param accessKey
-	 * @param secret
-	 * @return
-	 * @throws RMapAuthException
+	 * Retrieve the Agent URI that matches the key/secret combination provided.
+	 *
+	 * @param accessKey the access key
+	 * @param secret the secret
+	 * @return the agent URI by key/secret
+	 * @throws RMapAuthException the RMap Auth exception
 	 */
 	public URI getAgentUriByKeySecret(String accessKey, String secret) throws RMapAuthException {
         return apiKeyDao.getAgentUriByKeySecret(accessKey, secret);		
 	}	
 
 	/**
-	 * Retrieve a list of API keys that are associated with a user
-	 * @param userId
-	 * @return
-	 * @throws RMapAuthException
+	 * Retrieve a list of API keys that are associated with a user.
+	 *
+	 * @param userId the user id
+	 * @return the list
+	 * @throws RMapAuthException the RMap Auth exception
 	 */
 	public List<ApiKey> listApiKeyByUser(int userId) throws RMapAuthException {
         return apiKeyDao.listApiKeyByUser(userId);
 	}
 	
 	/**
-	 * Validate an API key/secret combination to ensure the user has access to write to RMap
-	 * @param accessKey
-	 * @param secret
-	 * @throws RMapAuthException
+	 * Validate an API key/secret combination to ensure the user has access to write to RMap.
+	 *
+	 * @param accessKey the access key
+	 * @param secret the secret
+	 * @throws RMapAuthException the RMap Auth exception
 	 */
 	public void validateApiKey(String accessKey, String secret) throws RMapAuthException {
 

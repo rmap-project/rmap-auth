@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package info.rmapproject.auth.service;
 
 import info.rmapproject.auth.exception.ErrorCode;
@@ -20,34 +23,35 @@ import org.springframework.stereotype.Service;
 
 /**
  * Service for access to methods related to the rmap:Agent object in RMap
- * graph database
- * @author khanson
+ * graph database.
  *
+ * @author khanson
  */
 
 @Service("userRMapAgentService")
 public class UserRMapAgentServiceImpl {
 
 	//private static final Logger logger = LoggerFactory.getLogger(ApiKeyServiceImpl.class);
-	/** Instance of rmapService for Core RMap functions*/
+	/**  Instance of rmapService for Core RMap functions. */
 	@Autowired
 	RMapService rmapService;
 	
-	/** Instance of service for interaction with User data*/
+	/**  Instance of service for interaction with User data. */
 	@Autowired
 	UserServiceImpl userService;
 	
 
-	/** Instance of service for interaction with UserIdentityProvider data*/
+	/**  Instance of service for interaction with UserIdentityProvider data. */
 	@Autowired
 	UserIdProviderServiceImpl userIdProvidersService;
 	
 	/**
 	 * Compares the user in the user database to the Agents in RMap. If the Agent is already in RMap
 	 * and details that have changed are updated. If the Agent is not in RMap it is created.
-	 * @param userId
-	 * @return
-	 * @throws RMapAuthException
+	 *
+	 * @param userId the User record ID
+	 * @return the RMap Event
+	 * @throws RMapAuthException the RMap Auth exception
 	 */
 	public RMapEvent createOrUpdateAgentFromUser(int userId) throws RMapAuthException {
 		RMapEvent event = null;

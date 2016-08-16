@@ -35,10 +35,8 @@
         <property name="annotatedClasses">
             <list>
                 <value>info.rmapproject.auth.model.ApiKey</value>
-                <value>info.rmapproject.auth.model.IdentityProvider</value>
                 <value>info.rmapproject.auth.model.User</value>
                 <value>info.rmapproject.auth.model.UserIdentityProvider</value>
-                <value>info.rmapproject.auth.model.AgentType</value>
                 <value>info.rmapproject.auth.model.KeyStatus</value>
             </list>
         </property>

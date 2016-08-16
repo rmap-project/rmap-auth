@@ -19,9 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service for access to Users related methods
- * @author khanson
+ * Service for access to Users related methods.
  *
+ * @author khanson
  */
 
 @Service("userService")
@@ -30,18 +30,19 @@ public class UserServiceImpl {
 
 //private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
-	/**RMap core Id Generator Service*/
+	/** RMap core Id Generator Service. */
 	@Autowired 
 	IdService rmapIdService;
 
-	/**Users table data access component*/
+	/** Users table data access component. */
 	@Autowired
 	UserDao userDao; 	
 	
 	/**
-	 * Create a new user
-	 * @param user
-	 * @return
+	 * Create a new user.
+	 *
+	 * @param user the User
+	 * @return the User record ID
 	 */
 	public int addUser(User user) {
 		
@@ -58,12 +59,14 @@ public class UserServiceImpl {
 		return userDao.addUser(user);
 	}
 	
-	/** 
+	/**
+	 *  
 	 * Generate an authentication key for the user. This uses the idprovider name combined with
 	 * the user's idP identifier to generate a sha256 hash string that forms the authentication key.
 	 * Given these two pieces of information a 3rd party user can verify someone is who they say they are
-	 * @param user
-	 * @return
+	 *
+	 * @param user the User
+	 * @return the User Auth Key
 	 */
 	public String generateAuthKey(User user){
 		try {
@@ -91,7 +94,8 @@ public class UserServiceImpl {
 	/**
 	 * Only updates any changed settings from the GUI - i.e. name and email
 	 * Protects the rest of the record from accidental corruption
-	 * @param updatedUser
+	 *
+	 * @param updatedUser the User
 	 */
 	public void updateUserSettings(User updatedUser) {
 		final User user = getUserById(updatedUser.getUserId());
@@ -103,8 +107,9 @@ public class UserServiceImpl {
 	}
 	
 	/**
-	 * Updates entire user record based on User object provided
-	 * @param user
+	 * Updates entire user record based on User object provided.
+	 *
+	 * @param user the User
 	 */
 	public void updateUser(User user) {
 		user.setLastAccessedDate(new Date());
@@ -112,29 +117,32 @@ public class UserServiceImpl {
 	}
 	
 	/**
-	 * Retrieve a user matching the userId provided
-	 * @param userId
-	 * @return
+	 * Retrieve a user matching the userId provided.
+	 *
+	 * @param userId the user id
+	 * @return the User
 	 */
 	public User getUserById(int userId) {
         return userDao.getUserById(userId);
 	}
 	
 	/**
-	 * Retrieves User object by searching using the authKeyUri provided
-	 * @param userId
-	 * @return
+	 * Retrieves User object by searching using the authKeyUri provided.
+	 *
+	 * @param authKeyUri the auth key URI
+	 * @return the user
 	 */
 	public User getUserByAuthKeyUri(String authKeyUri) {
         return userDao.getUserByAuthKeyUri(authKeyUri);
 	}
 
 	/**
-	 * Retrieve the user that matches a specific id provider account
-	 * @param idProvider
-	 * @param idProviderId
-	 * @return
-	 * @throws RMapAuthException
+	 * Retrieve the user that matches a specific id provider account.
+	 *
+	 * @param idProvider the id provider
+	 * @param idProviderId the id provider id
+	 * @return the user by provider account
+	 * @throws RMapAuthException the RMap Auth exception
 	 */
 	public User getUserByProviderAccount(String idProvider, String idProviderId) throws RMapAuthException{
 		return userDao.getUserByProviderAccount(idProvider, idProviderId);
@@ -142,11 +150,12 @@ public class UserServiceImpl {
 
 
 	/**
-	 * Retrieve the user that matches the key/secret combination provided
-	 * @param key
-	 * @param secret
-	 * @return
-	 * @throws RMapAuthException
+	 * Retrieve the user that matches the key/secret combination provided.
+	 *
+	 * @param key the key
+	 * @param secret the secret
+	 * @return the User
+	 * @throws RMapAuthException the RMap Auth exception
 	 */
 	public User getUserByKeySecret(String key, String secret) throws RMapAuthException{
 		return userDao.getUserByKeySecret(key, secret);

@@ -21,7 +21,7 @@ public class RMapAuthServiceFactory {
 	
 	/**
 	 * Create RMapAuthService object instance based on bean name
-	 * @return
+	 * @return instance of RMapAuthService
 	 */
 	public static RMapAuthService createService() {
 		try {
