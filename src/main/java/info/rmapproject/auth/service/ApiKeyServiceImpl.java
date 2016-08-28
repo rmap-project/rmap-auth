@@ -1,3 +1,22 @@
+/*******************************************************************************
+ * Copyright 2016 Johns Hopkins University
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * This software was produced as part of the RMap Project (http://rmap-project.info),
+ * The RMap Project was funded by the Alfred P. Sloan Foundation and is a 
+ * collaboration between Data Conservancy, Portico, and IEEE.
+ *******************************************************************************/
 package info.rmapproject.auth.service;
 
 import info.rmapproject.auth.dao.ApiKeyDao;
@@ -6,7 +25,7 @@ import info.rmapproject.auth.exception.RMapAuthException;
 import info.rmapproject.auth.model.ApiKey;
 import info.rmapproject.auth.model.KeyStatus;
 import info.rmapproject.auth.utils.Constants;
-import info.rmapproject.auth.utils.Utils;
+import info.rmapproject.auth.utils.RandomStringGenerator;
 import info.rmapproject.core.idservice.IdService;
 
 import java.net.URI;
@@ -47,14 +66,14 @@ public class ApiKeyServiceImpl {
 	 */
 	public int addApiKey(ApiKey apiKey) throws RMapAuthException {
 		//generate a new key/secret
-		String newAccessKey = Utils.generateRandomString(Constants.ACCESS_KEY_LENGTH);
-		String newSecret = Utils.generateRandomString(Constants.SECRET_LENGTH);
+		String newAccessKey = RandomStringGenerator.generateRandomString(Constants.ACCESS_KEY_LENGTH);
+		String newSecret = RandomStringGenerator.generateRandomString(Constants.SECRET_LENGTH);
 		//check for the very unlikely occurrence that a duplicate key/secret combo is generated
 		URI agent = this.getAgentUriByKeySecret(newAccessKey, newSecret);
 		if (agent!=null){
 			//a duplicate key combo!!! - try again...
-			newAccessKey = Utils.generateRandomString(Constants.ACCESS_KEY_LENGTH);
-			newSecret = Utils.generateRandomString(Constants.SECRET_LENGTH);
+			newAccessKey = RandomStringGenerator.generateRandomString(Constants.ACCESS_KEY_LENGTH);
+			newSecret = RandomStringGenerator.generateRandomString(Constants.SECRET_LENGTH);
 			agent = null;
 			agent = this.getAgentUriByKeySecret(newAccessKey, newSecret);
 			if (agent!=null){
