@@ -36,6 +36,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith( SpringJUnit4ClassRunner.class )
 @ContextConfiguration({ "classpath*:/spring-*-context.xml" })
 public class AuthServiceImplTest {
+
+	//TODO: need to rework the testing - currently tests against an actual development db
+	//tests will fail without that db.
 	
 	@Autowired
 	private RMapAuthService rmapAuthService;
@@ -92,8 +95,8 @@ public class AuthServiceImplTest {
 	
 	@Test
 	public void testValidateKey() {
-		String accessKey = "jhu";
-		String secret = "jhu";
+		String accessKey = "rmaptest";
+		String secret = "rmaptest";
 		try {
 			rmapAuthService.validateApiKey(accessKey, secret);
 		} catch (RMapAuthException e) {
@@ -103,8 +106,8 @@ public class AuthServiceImplTest {
 	
 	@Test
 	public void testGetUserByKeySecret() {
-		String accessKey = "jhu";
-		String secret = "jhu";
+		String accessKey = "rmaptest";
+		String secret = "rmaptest";
 		try {
 			rmapAuthService.getUserByKeySecret(accessKey, secret);
 		} catch (RMapAuthException e) {
